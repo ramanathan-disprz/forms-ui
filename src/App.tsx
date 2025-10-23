@@ -7,14 +7,14 @@ import {
 import { Toaster } from "react-hot-toast";
 
 import './App.css';
+import FormListView from "./pages/FormListView";
 
 
 function App() {
     return (
         <Router basename="ui">
-
             <Routes>
-                <Route path="/" element={<></>} />
+                <Route path="/form-builder" element={<FormListView/>} />
             </Routes>
 
             <Toaster

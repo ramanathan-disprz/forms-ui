@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@600&display=swap');
+
+.primary-button {
+    width: 125px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #5D38DF;
+    box-shadow: 0px 4px 8px 0px #00000029;
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+
+
+    .button-text {
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0px;
+        text-align: center;
+        color: #FFFFFF;
+        opacity: 1;
+        white-space: nowrap; // Prevent text wrapping
+    }
+
+    &:hover:not(:disabled) {
+        background: #4A2BC7;
+        box-shadow: 0px 6px 12px 0px #00000033;
+        transform: translateY(-1px);
+    }
+
+}
