@@ -1,0 +1,37 @@
+.form-field-item {
+    display: flex;
+    align-items: start;
+    gap: 4px;
+    padding-bottom: 2px;
+
+    .field-label {
+        height: 20px;
+        opacity: 1;
+        color: #8C8C8C;
+        font-family: 'Lato', sans-serif;
+        font-size: 15px;
+        line-height: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .field-separator {
+        color: #8C8C8C;
+        font-family: 'Lato', sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .field-value {
+        height: 20px;
+        opacity: 1;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 0px;
+        color: #585561;
+        display: flex;
+        align-items: center;
+    }
+}
