@@ -7,9 +7,10 @@ import NoFormsExistImage from "../assets/NoFormsExistImage.png";
 import "../styles/pages/forms-list/base.scss";
 import FormCard from "../components/FormCard";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FormListView: React.FC = () => {
-
+  const navigate = useNavigate();
   const [shouldShowContent, setShouldShowContent] = useState(false);
 
   const forms = [
@@ -23,6 +24,7 @@ const FormListView: React.FC = () => {
     { id: 8, title: "Pre-Course Experience" },
     { id: 8, title: "Pre-Course Experience" }
   ];
+
   return (
     <div className="form-list-container">
       <NavigationBar />
@@ -41,7 +43,7 @@ const FormListView: React.FC = () => {
             <h2>Create a Form Template</h2>
             <p className="subtitle">Create templates that can be used in various other features.</p>
             <div className="button-container">
-              <Button text="Create Form" onClick={() => { }} />
+              <Button text="Create Form" onClick={() => navigate("/form-builder/create")} />
             </div>
           </div>
         </div>
@@ -55,7 +57,7 @@ const FormListView: React.FC = () => {
                 <input type="text" placeholder="Search forms..." />
               </div>
               <div className="">
-                <Button text="Create Form" onClick={() => { }} />
+                <Button text="Create Form" onClick={() => navigate("/form-builder/create")} />
               </div>
             </div>
           </div>
@@ -68,7 +70,6 @@ const FormListView: React.FC = () => {
               />
             ))}
           </div>
-
         </div>
       )}
     </div>

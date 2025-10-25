@@ -1,0 +1,37 @@
+.form-visiblity {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .form-visiblity-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-visiblity-text {
+        height: 24px;
+        opacity: 1;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-style: normal;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.2px;
+        vertical-align: middle;
+        color: #000000;
+    }
+
+    .form-visiblity-description {
+        opacity: 1;
+
+        span {
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            font-size: 15px;
+            line-height: 20px;
+            letter-spacing: 0px;
+            color: #585561;
+        }
+    }
+}

@@ -2,19 +2,24 @@ import {
     BrowserRouter as Router,
     Navigate,
     Route,
-    Routes
+    Routes,
+    Outlet
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import './App.css';
 import FormListView from "./pages/FormListView";
+import CreateForm from "./pages/CreateForm";
 
 
 function App() {
     return (
         <Router basename="ui">
             <Routes>
-                <Route path="/form-builder" element={<FormListView/>} />
+                <Route path="/form-builder" element={<Outlet />}>
+                    <Route index element={<FormListView />} />
+                    <Route path="create" element={<CreateForm />} />
+                </Route>
             </Routes>
 
             <Toaster
