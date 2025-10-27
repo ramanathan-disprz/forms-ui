@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/components/form-input/base.scss";
 
 interface FormInputItemProps {
@@ -24,6 +24,10 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
 }) => {
 
     const [data, setData] = useState(value || "");
+    
+    useEffect(() => {
+        setData(value || "");
+    }, [value]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const value = e.target.value;

@@ -2,7 +2,12 @@ import { useState } from "react";
 import FormInputItem from "../../FormInputItem";
 import FormContentTile from "./FormContentTile";
 
-const LongTextTile: React.FC = () => {
+interface LongTextTileProps {
+    onClone: () => void;
+    onDelete: () => void;
+}
+
+const LongTextTile: React.FC<LongTextTileProps> = ({ onClone, onDelete }) => {
     const [hasDescription, setHasDescription] = useState(false);
     const content = (
         <>
@@ -31,7 +36,9 @@ const LongTextTile: React.FC = () => {
             isMovable={true}
             bodyContent={content}
             hasDescription={hasDescription}
-            onDescriptionChange={setHasDescription} />
+            onDescriptionChange={setHasDescription}
+            onClone={onClone}
+            onDelete={onDelete} />
     )
 };
 

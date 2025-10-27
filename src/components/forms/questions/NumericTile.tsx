@@ -2,7 +2,12 @@ import { useState } from "react";
 import FormInputItem from "../../FormInputItem";
 import FormContentTile from "./FormContentTile";
 
-const NumericTile: React.FC = () => {
+interface NumericTileProps {
+    onClone: () => void;
+    onDelete: () => void;
+}
+
+const NumericTile: React.FC<NumericTileProps> = ({ onClone, onDelete }) => {
     const [hasDescription, setHasDescription] = useState(false);
     const content = (
         <>
@@ -31,7 +36,10 @@ const NumericTile: React.FC = () => {
             isMovable={true}
             bodyContent={content}
             hasDescription={hasDescription}
-            onDescriptionChange={setHasDescription} />
+            onDescriptionChange={setHasDescription}
+            onClone={onClone}
+            onDelete={onDelete}
+        />
     )
 };
 

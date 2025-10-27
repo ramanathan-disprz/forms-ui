@@ -14,6 +14,8 @@ import { useEffect, useRef, useState } from "react";
 import LongTextTile from "./questions/LongTextTile";
 import NumericTile from "./questions/NumericTile";
 import DatePickerTile from "./questions/DatePickerTile";
+import FileUploadTile from "./questions/FileUploadTile";
+import DropdownTile from "./questions/drop-down/DropdownTile";
 
 type QuestionType =
     'short-text' |
@@ -86,7 +88,8 @@ const FormLayout: React.FC = () => {
                         key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <LongTextTile />
+                        <LongTextTile onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
@@ -96,7 +99,8 @@ const FormLayout: React.FC = () => {
                         key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <NumericTile />
+                        <NumericTile onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
@@ -106,9 +110,34 @@ const FormLayout: React.FC = () => {
                         key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <DatePickerTile />
+                        <DatePickerTile onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
+
+            case 'file-upload':
+                return (
+                    <div
+                        key={question.id}
+                        ref={isLastQuestion ? lastQuestionRef : null}
+                    >
+                        <FileUploadTile onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
+                    </div>
+                );
+
+            case 'dropdown':
+                return (
+                    <div
+                        key={question.id}
+                        ref={isLastQuestion ? lastQuestionRef : null}
+                    >
+                        <DropdownTile onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
+                    </div>
+                );
+
+
             default:
                 return null;
         }
@@ -177,7 +206,6 @@ const FormLayout: React.FC = () => {
                 </div>
 
                 <div className={styles.body}>
-                    <FormContentTile isMovable={true} />
                     {questions.map((question, index) => renderQuestion(question, index))}
                 </div>
             </div>

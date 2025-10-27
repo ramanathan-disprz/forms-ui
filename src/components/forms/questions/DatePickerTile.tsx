@@ -3,8 +3,14 @@ import FormInputItem from "../../FormInputItem";
 import FormContentTile from "./FormContentTile";
 import styles from '@/styles/components/forms/form-layout/questions/date-picker/base.module.scss';
 
-const DatePickerTile: React.FC = () => {
+interface DatePickerTileProps {
+    onClone: () => void;
+    onDelete: () => void;
+}
+
+const DatePickerTile: React.FC<DatePickerTileProps> = ({ onClone, onDelete }) => {
     const [hasDescription, setHasDescription] = useState(false);
+   
     const [isMMDD, setIsMMDD] = useState(true);
 
     const content = (
@@ -26,6 +32,7 @@ const DatePickerTile: React.FC = () => {
                     inputType="text"
                     isDisabled={true}
                     value={isMMDD ? 'MM/DD/YYYY' : 'DD/MM/YYYY'}
+                    
                 />
                 <div className={styles.dateFormatter}>
                     <span>Date Format: </span>
@@ -60,6 +67,8 @@ const DatePickerTile: React.FC = () => {
             bodyContent={content}
             hasDescription={hasDescription}
             onDescriptionChange={setHasDescription}
+            onClone={onClone}
+            onDelete={onDelete}
         />
     );
 };

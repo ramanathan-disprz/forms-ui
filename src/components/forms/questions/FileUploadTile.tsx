@@ -2,7 +2,15 @@ import { useState } from "react";
 import FormInputItem from "../../FormInputItem";
 import FormContentTile from "./FormContentTile";
 
-const FileUploadTile: React.FC = () => {
+import FileUploadIcon from '@/assets/question-icons/file-upload.svg';
+
+import styles from '@/styles/components/forms/form-layout/questions/file-upload/base.module.scss';
+interface FileUploadTileProps {
+    onClone: () => void;
+    onDelete: () => void;
+}
+
+const FileUploadTile: React.FC<FileUploadTileProps> = ({ onClone, onDelete }) => {
     const [hasDescription, setHasDescription] = useState(false);
     const content = (
         <>
@@ -18,11 +26,13 @@ const FileUploadTile: React.FC = () => {
                     maxLength={300}
                 />
             )}
-            <FormInputItem
-                inputType="text"
-                isDisabled={true}
-                valuePlaceholder="Short Text (Up to 100 Character)"
-            />
+            <div className={styles.container}>
+                <img src={FileUploadIcon} alt="File Upload Icon" />
+                <div className={styles.content}>
+                    <span> File Upload (Only one file allowed) </span>
+                    <span> Supported files : PDF, PNG, JPG  |  Max file size 2 MB  </span>
+                </div>
+            </div>
         </>
     );
 
@@ -31,7 +41,10 @@ const FileUploadTile: React.FC = () => {
             isMovable={true}
             bodyContent={content}
             hasDescription={hasDescription}
-            onDescriptionChange={setHasDescription} />
+            onDescriptionChange={setHasDescription}
+            onClone={onClone}
+            onDelete={onDelete}
+        />
     )
 };
 
