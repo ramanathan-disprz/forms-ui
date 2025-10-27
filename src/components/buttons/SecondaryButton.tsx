@@ -1,4 +1,4 @@
-import "../styles/components/secondary-button/base.scss";
+import styles from "../../styles/components/buttons/secondary-button/base.module.scss";
 
 interface ButtonProps {
     text: string;
@@ -11,10 +11,10 @@ const SecondaryButton: React.FC<ButtonProps> = ({
 }) => {
     return (
         <button
-            className="secondary-button"
+            className={styles.button}
             onClick={onClick}
         >
-            <span className="button-text">{text}</span>
+            <span className={styles.buttonText}>{text}</span>
         </button>
 
     );

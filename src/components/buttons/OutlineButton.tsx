@@ -1,4 +1,4 @@
-import "../styles/components/outline-button/base.scss";
+import styles from '../../styles/components/buttons/outline-button/base.module.scss';
 
 interface OutlineButtonProps {
     text: string;
@@ -8,11 +8,11 @@ interface OutlineButtonProps {
 
 const OutlineButton: React.FC<OutlineButtonProps> = ({ text, onClick, className }) => {
     return (
-        <button 
-            className={`outline-button ${className || ''}`}
+        <button
+            className={`${styles.outlineButton} ${className || ''}`}
             onClick={onClick}
         >
-            <span className="button-text">{text}</span>
+            <span className={styles.buttonText}>{text}</span>
         </button>
     );
 };

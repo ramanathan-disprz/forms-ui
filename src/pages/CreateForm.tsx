@@ -2,21 +2,22 @@ import "../styles/pages/create-form/base.scss"
 
 import NavigationBar from "../components/NavigationBar";
 import { useState } from "react";
-import FormInputItem from "../components/FormInputItem";
-import FormVisiblity from "../components/FormVisiblity";
 import FormFooter from "../components/FormFooter";
+import FormConfig from "../components/forms/FormConfig";
+import FormLayout from "../components/forms/FormLayout";
 
 function CreateForm() {
   const [selectedTab, setSelectedTab] =
-    useState<'configuration' | 'layout'>('configuration');
+    useState<'configuration' | 'layout'>('layout');
 
   return (
     <div className="create-form-container">
-      
+
       <NavigationBar />
 
       <div className="create-form-content-wrapper">
 
+        {/* Form Tab Header */}
         <div className="create-form-header">
           <span
             className={`form-tab-text ${selectedTab === 'configuration' ? 'active' : ''}`}
@@ -32,43 +33,18 @@ function CreateForm() {
           </span>
         </div>
 
+        {/* Form Body */}
         {selectedTab === 'configuration' ? (
-          <div className="create-form-configuration">
-            <h2 className="form-details-title">Form Details</h2>
-
-            <div className="form-details-inputs">
-
-              <FormInputItem
-                label="Form Name"
-                inputType="text"
-                valuePlaceholder="Post-Course Experience"
-                isRequired={true}
-                maxLength={80}
-              />
-
-              <FormInputItem
-                label="Form Description"
-                inputType="textarea"
-                valuePlaceholder="Internal feedback collection to evaluate content effectiveness, instructor performance, and learner experience."
-                isRequired={false}
-                maxLength={200}
-              />
-
-              <FormVisiblity
-                enabled={false}
-                onToggle={() => { }}
-              />
-
-            </div>
-          </div>
+          <FormConfig />
         )
           : (
-            <div className="create-form-layout">Layout</div>
+            <FormLayout />
           )}
       </div>
 
+      {/* Form Footer */}
       <FormFooter />
-      
+
     </div>
   )
 }

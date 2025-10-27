@@ -1,0 +1,14 @@
+export declare const buttonContainer: string;
+export declare const contentWrapper: string;
+export declare const formList: string;
+export declare const formListContainer: string;
+export declare const header: string;
+export declare const imageContainer: string;
+export declare const noContentWrapper: string;
+export declare const noFormsImage: string;
+export declare const searchBar: string;
+export declare const searchIcon: string;
+export declare const subtitle: string;
+export declare const textContainer: string;
+export declare const title: string;
+export declare const utils: string;

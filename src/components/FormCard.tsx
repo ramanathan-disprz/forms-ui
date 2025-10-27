@@ -1,8 +1,9 @@
 import { MoreVert } from "@mui/icons-material";
-import "../styles/components/form-card/base.scss";
 import FormFieldItem from "./FormFieldItem";
-import SecondaryButton from "./SecondaryButton";
-import Button from "./Button";
+import SecondaryButton from "./buttons/SecondaryButton";
+import Button from "./buttons/PrimaryButton";
+
+import "../styles/components/form-card/base.scss";
 
 interface FormCardProps {
     title: string;

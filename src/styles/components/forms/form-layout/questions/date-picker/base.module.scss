@@ -1,0 +1,77 @@
+.dateFormatter {
+    padding: 22px 0 26px 0;
+    gap: 16px;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+
+    span {
+        height: 20px;
+        opacity: 1;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 0px;
+        color: #262626;
+    }
+
+    .options {
+        height: 24px;
+        gap: 24px;
+        opacity: 1;
+        display: flex;
+        align-items: center;
+
+        .radioOption {
+            width: 123px;
+            height: 24px;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            input[type="radio"] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #D8D8D8;
+                border-radius: 50%;
+                margin: 0;
+                cursor: pointer;
+                position: relative;
+                transition: all 0.2s ease;
+
+                &:checked {
+                    border-color: #5D38DF;
+
+                    &::after {
+                        content: '';
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background-color: #5D38DF;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+
+                &:hover {
+                    border-color: #5D38DF;
+                    opacity: 0.8;
+                }
+            }
+
+            label {
+                font-family: 'Lato', sans-serif;
+                font-size: 14px;
+                color: #262626;
+                cursor: pointer;
+                user-select: none;
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
-import Button from "./Button";
+import Button from "./buttons/PrimaryButton";
 
 import "../styles/components/form-footer/base.scss";
-import OutlineButton from "./OutlineButton";
+import OutlineButton from "./buttons/OutlineButton";
 
 const FormFooter: React.FC = () => {
 
@@ -13,6 +13,7 @@ const FormFooter: React.FC = () => {
             />
             <Button
                 text="Next"
+                disabled = {true}
                 onClick={() => { }}
             />
         </div>

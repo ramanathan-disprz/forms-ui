@@ -1,0 +1,10 @@
+export declare const body: string;
+export declare const divider: string;
+export declare const header: string;
+export declare const headerTitle: string;
+export declare const layout: string;
+export declare const list: string;
+export declare const mainbar: string;
+export declare const metaData: string;
+export declare const sidebar: string;
+export declare const sidebarHeader: string;

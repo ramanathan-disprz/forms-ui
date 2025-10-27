@@ -1,7 +1,7 @@
 import { SearchSharp } from "@mui/icons-material";
 
 import NavigationBar from "../components/NavigationBar";
-import Button from "../components/Button";
+import Button from "../components/buttons/PrimaryButton";
 
 import NoFormsExistImage from "../assets/NoFormsExistImage.png";
 import "../styles/pages/forms-list/base.scss";

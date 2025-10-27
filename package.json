@@ -6,7 +6,9 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "css-types": "typed-scss-modules src --watch",
+    "dev:all": "concurrently \"npm run dev\" \"npm run css-types\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -22,10 +24,13 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^5.0.4",
+    "concurrently": "^9.2.1",
     "eslint": "^7.0.0",
     "eslint-plugin-react": "^7.0.0",
     "sass": "^1.93.2",
+    "typed-scss-modules": "^8.1.1",
     "typescript": "^4.0.0",
-    "vite": "^7.1.11"
+    "vite": "^7.1.11",
+    "vite-plugin-svgr": "^4.5.0"
   }
 }

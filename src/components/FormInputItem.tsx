@@ -3,6 +3,7 @@ import "../styles/components/form-input/base.scss";
 
 interface FormInputItemProps {
     inputType: "text" | "textarea";
+    isDisabled?: boolean;
     label?: string
     isRequired?: boolean;
 
@@ -14,6 +15,7 @@ interface FormInputItemProps {
 
 const FormInputItem: React.FC<FormInputItemProps> = ({
     inputType,
+    isDisabled = false,
     label,
     isRequired = false,
     value,
@@ -53,11 +55,16 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
 
     return (
         <div className="form-input-item">
-            <div className="form-input-label">
-                {label}
-                {isRequired && <span className="required-asterisk">*</span>}
-            </div>
-            <div className="form-input-value">
+            {label && (
+                <div className="form-input-label">
+                    {label}
+                    {isRequired && <span className="required-asterisk">*</span>}
+                </div>
+            )}
+            <div
+                className={`form-input-value ${isDisabled ? 'disabled' : ''}`}
+                style={{ pointerEvents: isDisabled ? 'none' : 'auto' }}
+            >
                 {input}
                 {maxLength && (
                     <span className="character-counter">

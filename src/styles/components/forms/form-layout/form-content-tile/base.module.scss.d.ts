@@ -1,0 +1,11 @@
+export declare const body: string;
+export declare const container: string;
+export declare const dragIcon: string;
+export declare const footer: string;
+export declare const header: string;
+export declare const icon: string;
+export declare const noHeader: string;
+export declare const operations: string;
+export declare const option: string;
+export declare const options: string;
+export declare const optionText: string;

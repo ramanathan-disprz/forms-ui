@@ -1,0 +1,109 @@
+.container {
+    border-radius: 12px;
+    padding: 0 32px 0 32px;
+    background: #FFFFFF;
+    border-top: none;
+    border: 1px solid #D8D8D8;
+
+    &.noHeader {
+        padding: 32px;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #FFFFFF;
+
+        .dragIcon {
+            color: #8C8C8C;
+            width: 24px;
+            height: 24px;
+            transform: rotate(90deg);
+            opacity: 1;
+            cursor: grab;
+
+            &:active {
+                cursor: grabbing;
+            }
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        gap: 24px;
+    }
+
+    .footer {
+        display: flex;
+        flex-direction: row;
+        margin: 20px 0 24px 0;
+        flex: 1;
+        opacity: 1;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        justify-content: end;
+
+
+        .operations {
+            min-width: 64px;
+            height: 24px;
+            gap: 16px;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon {
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    transform: translateY(-1px);
+                }
+
+                &:active {
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        .options {
+            margin-left: 32px;
+            height: 20px;
+            gap: 24px;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+
+            .option {
+                height: 20px;
+                gap: 8px;
+                opacity: 1;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+
+                transition: all 0.2s ease;
+
+                .optionText {
+                    width: 82px;
+                    height: 20px;
+                    opacity: 1;
+                    font-family: 'Lato', sans-serif;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: 0px;
+                    color: #585561;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+
+    }
+}

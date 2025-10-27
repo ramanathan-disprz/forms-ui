@@ -4,6 +4,7 @@
 .form-input-item {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 4px;
 
     .form-input-label {
@@ -42,6 +43,18 @@
         display: flex;
         align-items: center;
         position: relative;
+
+        &.disabled {
+            opacity: 0.6;
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+
+            input,
+            textarea {
+                cursor: not-allowed;
+                background-color: transparent;
+            }
+        }
 
         input,
         textarea {
