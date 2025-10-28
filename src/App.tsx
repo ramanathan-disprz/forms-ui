@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 
 import './App.css';
 import FormListView from "./pages/FormListView";
-import CreateForm from "./pages/CreateForm";
+import FormControl from "./pages/FormControl";
 
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
             <Routes>
                 <Route path="/form-builder" element={<Outlet />}>
                     <Route index element={<FormListView />} />
-                    <Route path="create" element={<CreateForm />} />
+                    <Route path="create" element={<FormControl />} />
                 </Route>
             </Routes>
 

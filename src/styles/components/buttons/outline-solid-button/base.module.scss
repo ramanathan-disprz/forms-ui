@@ -1,0 +1,50 @@
+.button {
+    width: 63px;
+    height: 32px;
+    gap: 10px;
+    opacity: 1;
+    border-radius: 6px;
+    padding: 6px 16px;
+    border: 1px solid #D8D8D8;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    .buttonText {
+        width: 31px;
+        height: 20px;
+        opacity: 1;
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0px;
+        text-align: center;
+        color: #5D38DF;
+    }
+
+    &:hover:not(.disabled) {
+        background: #5D38DF;
+        border-color: #5D38DF;
+
+        .buttonText {
+            color: #FFFFFF;
+        }
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+
+        .buttonText {
+            color: #999999;
+        }
+    }
+
+    &:active:not(.disabled) {
+        transform: translateY(1px);
+    }
+}

@@ -5,10 +5,11 @@ import { useState } from "react";
 import FormFooter from "../components/FormFooter";
 import FormConfig from "../components/forms/FormConfig";
 import FormLayout from "../components/forms/FormLayout";
+import FormResponses from "../components/forms/FormResponses";
 
-function CreateForm() {
+function FormControl() {
   const [selectedTab, setSelectedTab] =
-    useState<'configuration' | 'layout'>('layout');
+    useState<'configuration' | 'layout' | 'responses'>('responses');
 
   return (
     <div className="create-form-container">
@@ -31,15 +32,25 @@ function CreateForm() {
           >
             Form Layout
           </span>
+
+          <span
+            className={`form-tab-text ${selectedTab === 'responses' ? 'active' : ''}`}
+            onClick={() => setSelectedTab('responses')}
+          >
+            Form Responses
+          </span>
         </div>
 
         {/* Form Body */}
         {selectedTab === 'configuration' ? (
           <FormConfig />
         )
-          : (
+          : selectedTab === 'layout' ? (
             <FormLayout />
-          )}
+          )
+            : (
+              <FormResponses />
+            )}
       </div>
 
       {/* Form Footer */}
@@ -49,4 +60,4 @@ function CreateForm() {
   )
 }
 
-export default CreateForm;
+export default FormControl;
