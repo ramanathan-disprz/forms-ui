@@ -1,6 +1,17 @@
+export declare const caption: string;
 export declare const characterCounter: string;
+export declare const deleteIcon: string;
 export declare const disabled: string;
+export declare const downloadIcon: string;
+export declare const dropdownInput: string;
+export declare const file: string;
+export declare const fileIcon: string;
+export declare const fileUpload: string;
 export declare const formInputItem: string;
 export declare const formInputLabel: string;
 export declare const formInputValue: string;
+export declare const hiddenFileInput: string;
+export declare const meta: string;
+export declare const operations: string;
 export declare const requiredAsterisk: string;
+export declare const uploadArea: string;

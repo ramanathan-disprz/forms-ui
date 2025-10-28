@@ -1,0 +1,9 @@
+export declare const body: string;
+export declare const container: string;
+export declare const content: string;
+export declare const footer: string;
+export declare const formDescription: string;
+export declare const formTitle: string;
+export declare const header: string;
+export declare const headerTitle: string;
+export declare const metaData: string;

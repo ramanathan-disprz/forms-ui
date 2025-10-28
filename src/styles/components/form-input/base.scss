@@ -96,5 +96,159 @@
             font-family: 'Lato', sans-serif;
             font-size: 12px;
         }
+
+        .fileUpload {
+            height: 116px;
+            gap: 8px;
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+
+            .hiddenFileInput {
+                position: absolute;
+                width: 0;
+                height: 0;
+                opacity: 0;
+                overflow: hidden;
+                z-index: -1;
+            }
+
+            .uploadArea {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            img {
+                width: 88px;
+                height: 70px;
+                opacity: 1;
+            }
+
+            .caption {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+
+                span {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    width: 403px;
+                    height: 12px;
+                    opacity: 1;
+                    font-family: Lato;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 100%;
+                    letter-spacing: 0%;
+                    color: #585561;
+                }
+            }
+
+            .file {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 16px;
+                background: white;
+                border-radius: 6px;
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+
+                .meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+
+                    .fileIcon {
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    span {
+                        font-family: Lato;
+                        font-weight: 500;
+                        font-size: 14px;
+                        color: #262626;
+                        max-width: 250px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                .operations {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+
+                    .deleteIcon,
+                    .downloadIcon {
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                        transition: transform 0.2s;
+
+                        &:hover {
+                            transform: scale(1.1);
+                        }
+                    }
+
+                    .deleteIcon {
+                        &:hover {
+                            filter: brightness(0) saturate(100%) invert(27%) sepia(94%) saturate(7481%) hue-rotate(356deg) brightness(97%) contrast(113%);
+                        }
+                    }
+
+                    .downloadIcon {
+                        &:hover {
+                            filter: brightness(0) saturate(100%) invert(25%) sepia(98%) saturate(5025%) hue-rotate(246deg) brightness(93%) contrast(93%);
+                        }
+                    }
+                }
+            }
+        }
+
+        .dropdownInput {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            opacity: 1;
+            border-radius: 8px;
+            background: #FFFFFF;
+            padding: 0 12px;
+            font-family: 'Lato', sans-serif;
+            font-size: 15px;
+            color: #000000;
+            outline: none;
+            border: none;
+            cursor: pointer;
+
+            &:hover {
+                border-color: #999999;
+            }
+
+            &:focus {
+                border-color: #5D38DF;
+            }
+
+            option {
+                padding: 8px;
+                font-family: 'Lato', sans-serif;
+                font-size: 15px;
+            }
+        }
     }
 }
