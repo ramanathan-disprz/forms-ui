@@ -1,7 +1,7 @@
 import styles from "../../styles/components/buttons/secondary-button/base.module.scss";
 
 interface ButtonProps {
-    text: string;
+    text?: string;
     onClick: () => void;
 }
 

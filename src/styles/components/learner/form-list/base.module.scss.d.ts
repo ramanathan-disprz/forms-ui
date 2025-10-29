@@ -1,0 +1,12 @@
+export declare const container: string;
+export declare const content: string;
+export declare const filter: string;
+export declare const filterIcon: string;
+export declare const filterText: string;
+export declare const header: string;
+export declare const info: string;
+export declare const infoIcon: string;
+export declare const infoText: string;
+export declare const operation: string;
+export declare const search: string;
+export declare const searchIcon: string;

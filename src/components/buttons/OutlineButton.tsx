@@ -1,7 +1,7 @@
 import styles from '../../styles/components/buttons/outline-button/base.module.scss';
 
 interface OutlineButtonProps {
-    text: string;
+    text?: string;
     onClick: () => void;
     className?: string;
 }

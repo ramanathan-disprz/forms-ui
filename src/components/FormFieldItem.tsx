@@ -1,8 +1,8 @@
 import "../styles/components/form-card/form-field-item/base.scss";
 
 interface FormFieldItem {
-    label: string;
-    value: string;
+    label?: string;
+    value?: string;
 }
 
 const FormFieldItem: React.FC<FormFieldItem> = ({ label, value }) => {
