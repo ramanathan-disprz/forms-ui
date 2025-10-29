@@ -26,6 +26,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
     value,
     valuePlaceholder,
     maxLength,
+    onChange,
 }) => {
 
     const [data, setData] = useState(value || "");
@@ -41,8 +42,13 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
     }, [value]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const value = e.target.value;
-        setData(value);
+        const newValue = e.target.value;
+        setData(newValue);
+
+        // Call the parent's onChange handler if provided
+        if (onChange) {
+            onChange(newValue);
+        }
     }
 
     let input: any;

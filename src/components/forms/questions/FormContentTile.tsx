@@ -4,23 +4,21 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import Clone from "@/assets/form-footer-icons/clone.svg";
-import Trash from "@/assets/form-footer-icons/trash.svg";
-import { useState } from 'react';
+import CloneIcon from "@/assets/form-footer-icons/clone.svg";
+import TrashIcon from "@/assets/form-footer-icons/trash.svg";
 
 interface FormContentTileProps {
-    bodyContent?: React.ReactNode;
     isMovable?: boolean;
-
-    hasDescription?: boolean;
+    bodyContent?: React.ReactNode;
+    title?: string;
     description?: string;
-    onDescriptionChange?: (enabled: boolean) => void;
-
-    required?: boolean;
-    onRequiredChange?: (enabled: boolean) => void;
-
+    hasDescription?: boolean;
+    onDescriptionChange?: (value: boolean) => void;
+    isRequired?: boolean;
+    onRequiredChange?: (value: boolean) => void;
     onClone?: () => void;
     onDelete?: () => void;
+    questionNumber?: number;
 }
 
 const CustomSwitch = styled(Switch)(({ theme }) => ({
@@ -69,51 +67,29 @@ const CustomSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const FormContentTile: React.FC<FormContentTileProps> = ({
-    bodyContent,
     isMovable = false,
-
+    bodyContent,
+    title,
+    description,
     hasDescription = false,
-    description = "",
     onDescriptionChange,
-
-    required = false,
+    isRequired = false,
     onRequiredChange,
-
-    onClone = () => { },
-    onDelete = () => { },
+    onClone,
+    onDelete,
+    questionNumber
 }) => {
-
-    const handleClone = () => {
-        onClone?.();
-    };
-
-    const handleDelete = () => {
-        onDelete?.();
-    };
-
-    const [descriptionEnabled, setDescriptionEnabled] = useState(hasDescription);
-    const [requiredEnabled, setRequiredEnabled] = useState(required);
-
-    const handleDescriptionChange = (checked: boolean) => {
-        setDescriptionEnabled(checked);
-        onDescriptionChange?.(checked);
-    };
-
-    const handleRequiredChange = (checked: boolean) => {
-        setRequiredEnabled(checked);
-        onRequiredChange?.(checked);
-    };
 
     const defaultContent = (
         <>
             <FormInputItem
                 inputType="text"
-                valuePlaceholder="Form Title"
+                value={title || "Form Title"}
                 maxLength={80}
             />
             <FormInputItem
                 inputType="text"
-                valuePlaceholder="Form Description"
+                value={description || "Form Description"}
                 maxLength={300}
             />
         </>
@@ -139,11 +115,11 @@ const FormContentTile: React.FC<FormContentTileProps> = ({
                 <div className={styles.footer}>
 
                     <div className={styles.operations}>
-                        <div className={styles.icon} onClick={handleClone}>
-                            <img src={Clone} alt="Clone" />
+                        <div className={styles.icon} onClick={onClone}>
+                            <img src={CloneIcon} alt="Clone" />
                         </div>
-                        <div className={styles.icon} onClick={handleDelete}>
-                            <img src={Trash} alt="Delete" />
+                        <div className={styles.icon} onClick={onDelete}>
+                            <img src={TrashIcon} alt="Delete" />
                         </div>
                     </div>
                     <div className={styles.options}>
@@ -151,8 +127,8 @@ const FormContentTile: React.FC<FormContentTileProps> = ({
                         <div className={styles.option}>
                             <span className={styles.optionText}>Description</span>
                             <CustomSwitch
-                                checked={descriptionEnabled}
-                                onChange={(e) => handleDescriptionChange(e.target.checked)}
+                                checked={hasDescription}
+                                onChange={(e) => onDescriptionChange?.(e.target.checked)}
                                 size="small"
                             />
                         </div>
@@ -160,8 +136,8 @@ const FormContentTile: React.FC<FormContentTileProps> = ({
                         <div className={styles.option}>
                             <span className={styles.optionText}>Required</span>
                             <CustomSwitch
-                                checked={requiredEnabled}
-                                onChange={(e) => handleRequiredChange(e.target.checked)}
+                                checked={isRequired}
+                                onChange={(e) => onRequiredChange?.(e.target.checked)}
                                 size="small"
                             />
                         </div>

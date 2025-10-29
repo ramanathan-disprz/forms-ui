@@ -16,47 +16,97 @@ import NumericTile from "./questions/NumericTile";
 import DatePickerTile from "./questions/DatePickerTile";
 import FileUploadTile from "./questions/FileUploadTile";
 import DropdownTile from "./questions/drop-down/DropdownTile";
+import { FormRequest, QuestionRequest, QuestionType } from "../../features/forms/Form";
 
-type QuestionType =
-    'short-text' |
-    'long-text' |
-    'date-picker' |
-    'dropdown' |
-    'file-upload' |
-    'numeric';
-
-interface Question {
-    id: string;
-    type: QuestionType;
+interface FormLayoutProps {
+    formData: FormRequest;
+    onFormChange: (field: keyof FormRequest, value: any) => void;
 }
 
-const FormLayout: React.FC = () => {
+const FormLayout: React.FC<FormLayoutProps> = ({
+    formData,
+    onFormChange
+}) => {
 
-    const [questions, setQuestions] = useState<Question[]>([]);
-    const mainbarRef = useRef<HTMLDivElement>(null);
     const lastQuestionRef = useRef<HTMLDivElement>(null);
+    const [questions, setQuestions] = useState<QuestionRequest[]>(formData?.questions || []);
+
+    // Sync questions with parent form state whenever they change
+    useEffect(() => {
+        onFormChange('questions', questions);
+    }, [questions]);
+
+    // Update local state when formData.questions changes from parent
+    useEffect(() => {
+        if (formData.questions) {
+            setQuestions(formData.questions);
+        }
+    }, [formData.questions]);
 
     const handleAddQuestion = (type: QuestionType) => {
-        const newQuestion: Question = {
-            id: `question-${Date.now()}`,
-            type: type
+        const newQuestion: QuestionRequest = {
+            questionId: `question-${Date.now()}`,
+            type: type,
+            questionText: "",
+            description: "",
+            placeholder: "",
+            required: false,
+            order: questions.length + 1,
+
+            // Set default values based on question type
+            ...(type === QuestionType.SHORT_TEXT && {
+                maxLength: 100
+            }),
+
+            ...(type === QuestionType.LONG_TEXT && {
+                minLength: 150,
+                maxLength: 500
+            }),
+            ...(type === QuestionType.NUMBER && {
+                minValue: 0,
+                maxValue: 100
+            }),
+            ...(type === QuestionType.DATE && {
+                minDate: new Date(),
+                maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+            }),
+            ...(type === QuestionType.FILE && {
+                allowedFileTypes: ['.pdf', '.png', '.jpg', '.jpeg'],
+                maxFileSizeMB: 2,
+                maxFiles: 1
+            }),
+            ...(type === QuestionType.SELECT && {
+                options: [],
+                multiSelect: false
+            })
         };
-        setQuestions([...questions, newQuestion]);
+
+        const updatedQuestions = [...questions, newQuestion];
+        setQuestions(updatedQuestions);
     };
 
-    const handleCloneQuestion = (questionId: string) => {
-        const questionToClone = questions.find(q => q.id === questionId);
+    const handleCloneQuestion = (questionId?: string) => {
+        const questionToClone = questions.find(q => q.questionId === questionId);
         if (questionToClone) {
-            const clonedQuestion: Question = {
-                id: `question-${Date.now()}`,
-                type: questionToClone.type
+            const clonedQuestion: QuestionRequest = {
+                ...questionToClone,
+                questionId: `question-${Date.now()}`,
+                order: questions.length + 1
             };
-            setQuestions([...questions, clonedQuestion]);
+            const updatedQuestions = [...questions, clonedQuestion];
+            setQuestions(updatedQuestions);
         }
     };
 
-    const handleDeleteQuestion = (questionId: string) => {
-        setQuestions(questions.filter(q => q.id !== questionId));
+    const handleUpdateQuestion = (questionId?: string, updates?: Partial<QuestionRequest>) => {
+        const updatedQuestions = questions.map(q =>
+            q.questionId === questionId ? { ...q, ...updates } : q
+        );
+        setQuestions(updatedQuestions);
+    };
+
+    const handleDeleteQuestion = (questionId?: string) => {
+        setQuestions(questions.filter(q => q.questionId !== questionId));
     };
 
     useEffect(() => {
@@ -68,81 +118,99 @@ const FormLayout: React.FC = () => {
         }
     }, [questions]);
 
-    const renderQuestion = (question: Question, index: number) => {
+    const renderQuestion = (question: QuestionRequest, index: number) => {
         const isLastQuestion = index === questions.length - 1;
 
         switch (question.type) {
-            case 'short-text':
+            case QuestionType.SHORT_TEXT:
                 return (
                     <div
-                        key={question.id}
+                        key={question.questionId}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <ShortTextTile onClone={() => handleCloneQuestion(question.id)}
-                            onDelete={() => handleDeleteQuestion(question.id)} />
-                    </div>
-                );
-            case 'long-text':
-                return (
-                    <div
-                        key={question.id}
-                        ref={isLastQuestion ? lastQuestionRef : null}
-                    >
-                        <LongTextTile onClone={() => handleCloneQuestion(question.id)}
-                            onDelete={() => handleDeleteQuestion(question.id)} />
+                        <ShortTextTile
+                            question={question}
+                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
+                            onClone={() => handleCloneQuestion(question.questionId)}
+                            onDelete={() => handleDeleteQuestion(question.questionId)} />
                     </div>
                 );
 
-            case 'numeric':
+            case QuestionType.LONG_TEXT:
                 return (
                     <div
-                        key={question.id}
+                        key={question.questionId}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <NumericTile onClone={() => handleCloneQuestion(question.id)}
-                            onDelete={() => handleDeleteQuestion(question.id)} />
+                        <LongTextTile
+                            question={question}
+                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
+                            onClone={() => handleCloneQuestion(question.questionId)}
+                            onDelete={() => handleDeleteQuestion(question.questionId)} />
                     </div>
                 );
 
-            case 'date-picker':
+            case QuestionType.NUMBER:
                 return (
                     <div
-                        key={question.id}
+                        key={question.questionId}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <DatePickerTile onClone={() => handleCloneQuestion(question.id)}
-                            onDelete={() => handleDeleteQuestion(question.id)} />
+                        <NumericTile
+                            question={question}
+                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
+                            onClone={() => handleCloneQuestion(question.questionId)}
+                            onDelete={() => handleDeleteQuestion(question.questionId)} />
                     </div>
                 );
 
-            case 'file-upload':
+            case QuestionType.DATE:
                 return (
                     <div
-                        key={question.id}
+                        key={question.questionId}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <FileUploadTile onClone={() => handleCloneQuestion(question.id)}
-                            onDelete={() => handleDeleteQuestion(question.id)} />
+                        <DatePickerTile
+                            question={question}
+                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
+                            onClone={() => handleCloneQuestion(question.questionId)}
+                            onDelete={() => handleDeleteQuestion(question.questionId)}
+                        />
                     </div>
                 );
 
-            case 'dropdown':
+            case QuestionType.FILE:
                 return (
                     <div
-                        key={question.id}
+                        key={question.questionId}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
-                        <DropdownTile onClone={() => handleCloneQuestion(question.id)}
-                            onDelete={() => handleDeleteQuestion(question.id)} />
+                        <FileUploadTile
+                            question={question}
+                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
+                            onClone={() => handleCloneQuestion(question.questionId)}
+                            onDelete={() => handleDeleteQuestion(question.questionId)} />
                     </div>
                 );
 
+            case QuestionType.SELECT:
+                return (
+                    <div
+                        key={question.questionId}
+                        ref={isLastQuestion ? lastQuestionRef : null}
+                    >
+                        <DropdownTile
+                            question={question}
+                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
+                            onClone={() => handleCloneQuestion(question.questionId)}
+                            onDelete={() => handleDeleteQuestion(question.questionId)} />
+                    </div>
+                );
 
             default:
                 return null;
         }
     };
-
 
     return (
         <div className={styles.layout}>
@@ -158,39 +226,40 @@ const FormLayout: React.FC = () => {
                     <FormListTile
                         icon={ShortText}
                         text="Short Text"
-                        onClick={() => handleAddQuestion('short-text')}
+                        onClick={() => handleAddQuestion(QuestionType.SHORT_TEXT)}
                     />
                     <FormListTile
                         icon={LongText}
                         text="Long Text"
                         color="#7B61FF40"
-                        onClick={() => handleAddQuestion('long-text')}
+                        onClick={() => handleAddQuestion(QuestionType.LONG_TEXT)}
                     />
                     <FormListTile
                         icon={DatePicker}
                         text="Date Picker"
                         color="#BBE9E4"
-                        onClick={() => handleAddQuestion('date-picker')}
+                        onClick={() => handleAddQuestion(QuestionType.DATE)}
                     />
                     <FormListTile
                         icon={DropDown}
                         text="Drop Down"
                         color="#DBF3CC"
-                        onClick={() => handleAddQuestion('dropdown')}
+                        onClick={() => handleAddQuestion(QuestionType.SELECT)}
                     />
                     <FormListTile
                         icon={FileUpload}
                         text="File Upload"
                         color="#E7CCF3"
-                        onClick={() => handleAddQuestion('file-upload')}
+                        onClick={() => handleAddQuestion(QuestionType.FILE)}
                     />
                     <FormListTile
                         icon={Numeric}
                         text="Numeric"
                         color="#F3CCE1"
-                        onClick={() => handleAddQuestion('numeric')}
+                        onClick={() => handleAddQuestion(QuestionType.NUMBER)}
                     />
                 </div>
+
             </div>
 
             <div className={styles.mainbar}>
@@ -201,7 +270,11 @@ const FormLayout: React.FC = () => {
                     </span>
                     <hr className={styles.divider} />
                     <div className={styles.metaData}>
-                        <FormContentTile isMovable={false} />
+                        <FormContentTile 
+                            isMovable={false}
+                            title={formData.title}
+                            description={formData.description}
+                        />
                     </div>
                 </div>
 

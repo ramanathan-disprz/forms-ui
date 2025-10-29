@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 
 interface FormVisiblityProps {
     enabled: boolean,
-    onToggle: () => void
+    onToggle: (enabled: boolean) => void;
 }
 
 const CustomSwitch = styled(Switch)(({ theme }) => ({
@@ -62,7 +62,7 @@ const FormVisiblity: React.FC<FormVisiblityProps> =
                     <span className="form-visiblity-text">Form Visibility</span>
                     <CustomSwitch
                         checked={enabled}
-                        onChange={onToggle}
+                        onChange={(event, checked) => onToggle(checked)}
                         inputProps={{ 'aria-label': 'Form visibility toggle' }}
                     />
                 </div>

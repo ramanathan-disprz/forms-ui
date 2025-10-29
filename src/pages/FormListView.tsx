@@ -6,30 +6,56 @@ import Button from "../components/buttons/PrimaryButton";
 import NoFormsExistImage from "../assets/NoFormsExistImage.png";
 import "../styles/pages/forms-list/base.scss";
 import FormCard from "../components/FormCard";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForms } from "../api/forms/useForms";
 
 const FormListView: React.FC = () => {
   const navigate = useNavigate();
-  const [shouldShowContent, setShouldShowContent] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const forms = [
-    { id: 1, title: "Post-Course Experience" },
-    { id: 2, title: "Pre-Course Experience" },
-    { id: 3, title: "Pre-Course Experience" },
-    { id: 4, title: "Pre-Course Experience" },
-    { id: 5, title: "Pre-Course Experience" },
-    { id: 6, title: "Pre-Course Experience" },
-    { id: 7, title: "Pre-Course Experience" },
-    { id: 8, title: "Pre-Course Experience" },
-    { id: 8, title: "Pre-Course Experience" }
-  ];
+  const { data, isLoading, error } = useForms();
+  const hasNoFormsRef = useRef(false);
+  hasNoFormsRef.current = !isLoading && (!data || data.length === 0);
+
+  // Filter forms based on search
+  const filteredForms = searchTerm
+    ? data.filter((form: any) =>
+      form.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    : data;
+
+
+  if (isLoading) {
+    return (
+      <div className="form-list-container">
+        <NavigationBar />
+        <div className="loading-wrapper">
+          <p>Loading forms...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="form-list-container">
+        <NavigationBar />
+        <div className="error-wrapper">
+          <p>Error loading forms: {error.message}</p>
+        </div>
+      </div>
+    );
+  }
+
+  console.log(filteredForms)
+
 
   return (
     <div className="form-list-container">
       <NavigationBar />
 
-      {shouldShowContent ? (
+      {hasNoFormsRef.current ? (
         <div className="no-content-wrapper">
           <div className="image-container">
             <img
@@ -54,7 +80,12 @@ const FormListView: React.FC = () => {
             <div className="utils">
               <div className="search-bar">
                 <SearchSharp className="search-icon" />
-                <input type="text" placeholder="Search forms..." />
+                <input
+                  type="text"
+                  placeholder="Search forms..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
               <div className="">
                 <Button text="Create Form" onClick={() => navigate("/form-builder/create")} />
@@ -63,10 +94,15 @@ const FormListView: React.FC = () => {
           </div>
 
           <div className="form-list">
-            {forms.map((form) => (
+            {filteredForms.map((form: any) => (
               <FormCard
                 key={form.id}
+                id={form.id}
                 title={form.title}
+                publishedBy={form.publishedBy}
+                publishedDate={form.publishedDate}
+                isEnabled={form.isEnabled}
+                isPublished={form.isPublished}
               />
             ))}
           </div>

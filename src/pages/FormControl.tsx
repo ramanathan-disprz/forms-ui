@@ -1,15 +1,67 @@
 import "../styles/pages/create-form/base.scss"
 
 import NavigationBar from "../components/NavigationBar";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import FormFooter from "../components/FormFooter";
 import FormConfig from "../components/forms/FormConfig";
 import FormLayout from "../components/forms/FormLayout";
 import FormResponses from "../components/forms/FormResponses";
-
+import { FormRequest, FormStatus, FormViewStatus } from "../features/forms/Form";
+import { useCreateForm } from "../api/forms/useForms";
+import toast from "react-hot-toast";
 function FormControl() {
   const [selectedTab, setSelectedTab] =
-    useState<'configuration' | 'layout' | 'responses'>('responses');
+    useState<'configuration' | 'layout' | 'responses'>('configuration');
+
+  const [form, setForm] = useState<FormRequest>({
+    title: "Untitled Form",
+    description: "",
+    formViewStatus: FormViewStatus.ENABLED,
+    questions: []
+  });
+
+  const createFormMutation = useCreateForm();
+
+  const handleFormChange = useCallback((field: keyof FormRequest, value: any) => {
+    setForm(prevForm => ({
+      ...prevForm,
+      [field]: value
+    }));
+  }, []);
+
+  const handleNext = () => {
+    setSelectedTab('layout');
+  };
+
+  const handlePublish = () => {
+    console.log('Publishing form:', form);
+
+  };
+
+  const handleSaveDraft = () => {
+    const draftForm = {
+      ...form,
+      publishedBy: 23092003,
+      publishedDate: new Date(),
+      formStatus: FormStatus.DRAFT,
+      questions: (form.questions || []).map(q => {
+        const { questionId, ...questionWithoutId } = q;
+        return questionWithoutId;
+      })
+    };
+
+    console.log('Sending draft form:', JSON.stringify(draftForm, null, 2));
+
+    createFormMutation.mutate(draftForm, {
+      onSuccess: (data) => {
+        console.log('Draft saved successfully:', data);
+        setForm(prev => ({ ...prev, id: data.id }));
+      },
+      onError: (error) => {
+        console.error('Failed to save draft:', error);
+      }
+    });
+  };
 
   return (
     <div className="create-form-container">
@@ -43,10 +95,16 @@ function FormControl() {
 
         {/* Form Body */}
         {selectedTab === 'configuration' ? (
-          <FormConfig />
+          <FormConfig
+            formData={form}
+            onFormChange={handleFormChange}
+          />
         )
           : selectedTab === 'layout' ? (
-            <FormLayout />
+            <FormLayout
+              formData={form}
+              onFormChange={handleFormChange}
+            />
           )
             : (
               <FormResponses />
@@ -54,7 +112,12 @@ function FormControl() {
       </div>
 
       {/* Form Footer */}
-      <FormFooter />
+      <FormFooter
+        selectedTab={selectedTab}
+        onNext={handleNext}
+        onPublish={handlePublish}
+        onSaveDraft={handleSaveDraft}
+      />
 
     </div>
   )

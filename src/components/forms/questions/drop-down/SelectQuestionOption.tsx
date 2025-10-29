@@ -5,34 +5,29 @@ import CloseIcon from '@/assets/question-icons/close.svg';
 interface SelectQuestionOptionProps {
     order: number
     optionValue: string
-    onChange?: (optionValue: string) => void;
+    onValueChange: (value: string) => void;
     onClose: () => void
 }
 
 const SelectQuestionOption: React.FC<SelectQuestionOptionProps> = (
-    { order,
+    {
+        order,
         optionValue,
-        onChange,
+        onValueChange,
         onClose }) => {
 
-    const [data, setData] = useState(optionValue || "");
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setData(value);
-    }
     return (
         <div className={styles.container}>
-            
+
             <div className={styles.option}>
                 <div className={styles.order}>
                     {order}
                 </div>
                 <input
                     type="text"
-                    value={data}
+                    value={optionValue}
                     className={styles.optionValue}
-                    onChange={handleChange}
+                    onChange={(e) => onValueChange(e.target.value)}
                 />
             </div>
 
@@ -40,7 +35,7 @@ const SelectQuestionOption: React.FC<SelectQuestionOptionProps> = (
                 <img src={CloseIcon} alt="Close Icon" onClick={onClose} />
             </div>
         </div>
-    )
+    );
 };
 
 export default SelectQuestionOption;
