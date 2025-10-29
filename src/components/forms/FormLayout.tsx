@@ -45,7 +45,7 @@ const FormLayout: React.FC<FormLayoutProps> = ({
 
     const handleAddQuestion = (type: QuestionType) => {
         const newQuestion: QuestionRequest = {
-            questionId: `question-${Date.now()}`,
+            id: `question-${Date.now()}`,
             type: type,
             questionText: "",
             description: "",
@@ -85,12 +85,12 @@ const FormLayout: React.FC<FormLayoutProps> = ({
         setQuestions(updatedQuestions);
     };
 
-    const handleCloneQuestion = (questionId?: string) => {
-        const questionToClone = questions.find(q => q.questionId === questionId);
+    const handleCloneQuestion = (id?: string) => {
+        const questionToClone = questions.find(q => q.id === id);
         if (questionToClone) {
             const clonedQuestion: QuestionRequest = {
                 ...questionToClone,
-                questionId: `question-${Date.now()}`,
+                id: `question-${Date.now()}`,
                 order: questions.length + 1
             };
             const updatedQuestions = [...questions, clonedQuestion];
@@ -98,15 +98,15 @@ const FormLayout: React.FC<FormLayoutProps> = ({
         }
     };
 
-    const handleUpdateQuestion = (questionId?: string, updates?: Partial<QuestionRequest>) => {
+    const handleUpdateQuestion = (id?: string, updates?: Partial<QuestionRequest>) => {
         const updatedQuestions = questions.map(q =>
-            q.questionId === questionId ? { ...q, ...updates } : q
+            q.id === id ? { ...q, ...updates } : q
         );
         setQuestions(updatedQuestions);
     };
 
-    const handleDeleteQuestion = (questionId?: string) => {
-        setQuestions(questions.filter(q => q.questionId !== questionId));
+    const handleDeleteQuestion = (id?: string) => {
+        setQuestions(questions.filter(q => q.id !== id));
     };
 
     useEffect(() => {
@@ -125,56 +125,56 @@ const FormLayout: React.FC<FormLayoutProps> = ({
             case QuestionType.SHORT_TEXT:
                 return (
                     <div
-                        key={question.questionId}
+                        key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
                         <ShortTextTile
                             question={question}
-                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
-                            onClone={() => handleCloneQuestion(question.questionId)}
-                            onDelete={() => handleDeleteQuestion(question.questionId)} />
+                            onUpdate={(updates) => handleUpdateQuestion(question.id, updates)}
+                            onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
             case QuestionType.LONG_TEXT:
                 return (
                     <div
-                        key={question.questionId}
+                        key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
                         <LongTextTile
                             question={question}
-                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
-                            onClone={() => handleCloneQuestion(question.questionId)}
-                            onDelete={() => handleDeleteQuestion(question.questionId)} />
+                            onUpdate={(updates) => handleUpdateQuestion(question.id, updates)}
+                            onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
             case QuestionType.NUMBER:
                 return (
                     <div
-                        key={question.questionId}
+                        key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
                         <NumericTile
                             question={question}
-                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
-                            onClone={() => handleCloneQuestion(question.questionId)}
-                            onDelete={() => handleDeleteQuestion(question.questionId)} />
+                            onUpdate={(updates) => handleUpdateQuestion(question.id, updates)}
+                            onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
             case QuestionType.DATE:
                 return (
                     <div
-                        key={question.questionId}
+                        key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
                         <DatePickerTile
                             question={question}
-                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
-                            onClone={() => handleCloneQuestion(question.questionId)}
-                            onDelete={() => handleDeleteQuestion(question.questionId)}
+                            onUpdate={(updates) => handleUpdateQuestion(question.id, updates)}
+                            onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)}
                         />
                     </div>
                 );
@@ -182,28 +182,28 @@ const FormLayout: React.FC<FormLayoutProps> = ({
             case QuestionType.FILE:
                 return (
                     <div
-                        key={question.questionId}
+                        key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
                         <FileUploadTile
                             question={question}
-                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
-                            onClone={() => handleCloneQuestion(question.questionId)}
-                            onDelete={() => handleDeleteQuestion(question.questionId)} />
+                            onUpdate={(updates) => handleUpdateQuestion(question.id, updates)}
+                            onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
             case QuestionType.SELECT:
                 return (
                     <div
-                        key={question.questionId}
+                        key={question.id}
                         ref={isLastQuestion ? lastQuestionRef : null}
                     >
                         <DropdownTile
                             question={question}
-                            onUpdate={(updates) => handleUpdateQuestion(question.questionId, updates)}
-                            onClone={() => handleCloneQuestion(question.questionId)}
-                            onDelete={() => handleDeleteQuestion(question.questionId)} />
+                            onUpdate={(updates) => handleUpdateQuestion(question.id, updates)}
+                            onClone={() => handleCloneQuestion(question.id)}
+                            onDelete={() => handleDeleteQuestion(question.id)} />
                     </div>
                 );
 
@@ -270,7 +270,7 @@ const FormLayout: React.FC<FormLayoutProps> = ({
                     </span>
                     <hr className={styles.divider} />
                     <div className={styles.metaData}>
-                        <FormContentTile 
+                        <FormContentTile
                             isMovable={false}
                             title={formData.title}
                             description={formData.description}

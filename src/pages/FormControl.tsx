@@ -9,6 +9,7 @@ import FormResponses from "../components/forms/FormResponses";
 import { FormRequest, FormStatus, FormViewStatus } from "../features/forms/Form";
 import { useCreateForm } from "../api/forms/useForms";
 import toast from "react-hot-toast";
+
 function FormControl() {
   const [selectedTab, setSelectedTab] =
     useState<'configuration' | 'layout' | 'responses'>('configuration');
@@ -34,10 +35,30 @@ function FormControl() {
   };
 
   const handlePublish = () => {
-    console.log('Publishing form:', form);
+    const publishedForm = {
+      ...form,
+      publishedBy: 23092003,
+      publishedDate: new Date(),
+      formStatus: FormStatus.DRAFT,
+      questions: (form.questions || []).map(q => {
+        const { id, ...questionWithoutId } = q;
+        return questionWithoutId;
+      })
+    };
 
+    console.log('Sending draft form:', JSON.stringify(publishedForm, null, 2));
+
+    createFormMutation.mutate(publishedForm, {
+      onSuccess: (data) => {
+        console.log('Form published successfully:', data);
+        toast.success('Form published successfully');
+        setForm(prev => ({ ...prev, id: data.id }));
+      },
+      onError: (error) => {
+        console.error('Failed to save draft:', error);
+      }
+    });
   };
-
   const handleSaveDraft = () => {
     const draftForm = {
       ...form,
@@ -45,7 +66,7 @@ function FormControl() {
       publishedDate: new Date(),
       formStatus: FormStatus.DRAFT,
       questions: (form.questions || []).map(q => {
-        const { questionId, ...questionWithoutId } = q;
+        const { id, ...questionWithoutId } = q;
         return questionWithoutId;
       })
     };
@@ -55,6 +76,7 @@ function FormControl() {
     createFormMutation.mutate(draftForm, {
       onSuccess: (data) => {
         console.log('Draft saved successfully:', data);
+        toast.success('Draft saved successfully');
         setForm(prev => ({ ...prev, id: data.id }));
       },
       onError: (error) => {
@@ -120,7 +142,7 @@ function FormControl() {
       />
 
     </div>
-  )
+  );
 }
 
 export default FormControl;

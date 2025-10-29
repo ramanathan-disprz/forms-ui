@@ -22,11 +22,11 @@ export interface Option {
     id: string;
     order: number;
     value: string;
-    label: string;  
+    label: string;
 }
 
 export interface QuestionRequest {
-    questionId?: string; // for ui
+    id?: string; // for ui
     formId?: string;
     type?: QuestionType;
     questionText?: string;

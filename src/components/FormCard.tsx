@@ -6,6 +6,7 @@ import Button from "./buttons/PrimaryButton";
 import "../styles/components/form-card/base.scss";
 import { useEffect, useRef, useState } from "react";
 import { useDeleteForm } from "../api/forms/useForms";
+import { useNavigate } from "react-router-dom";
 
 interface FormCardProps {
     id: string;
@@ -25,8 +26,12 @@ const FormCard: React.FC<FormCardProps> = ({
     isEnabled = false,
     isPublished = false,
 }) => {
+    const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const deleteFormMutation = useDeleteForm();
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -42,14 +47,15 @@ const FormCard: React.FC<FormCardProps> = ({
     const handleEditForm = () => {
         console.log("Edit form");
         setShowDropdown(false);
-        // Add your edit logic here
+        navigate(`/form-builder/edit/${id}`);
     };
 
-    const deleteFormMutation = useDeleteForm();
+
     const handleViewForm = () => {
         console.log("View form");
         setShowDropdown(false);
-        // Add your view logic here
+        navigate(`/form-builder/view/${id}`);
+
     }
 
     const handleDeleteForm = () => {

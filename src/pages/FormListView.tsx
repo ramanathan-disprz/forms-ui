@@ -25,7 +25,7 @@ const FormListView: React.FC = () => {
     )
     : data;
 
-
+  console.log(filteredForms)
   if (isLoading) {
     return (
       <div className="form-list-container">
@@ -101,8 +101,8 @@ const FormListView: React.FC = () => {
                 title={form.title}
                 publishedBy={form.publishedBy}
                 publishedDate={form.publishedDate}
-                isEnabled={form.isEnabled}
-                isPublished={form.isPublished}
+                isEnabled={form.formViewStatus === "ENABLED"}
+                isPublished={form.formStatus === "PUBLISHED"}
               />
             ))}
           </div>

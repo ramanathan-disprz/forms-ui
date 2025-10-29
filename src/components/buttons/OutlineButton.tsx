@@ -4,12 +4,15 @@ interface OutlineButtonProps {
     text?: string;
     onClick: () => void;
     className?: string;
+    disabled?: boolean;
 }
 
-const OutlineButton: React.FC<OutlineButtonProps> = ({ text, onClick, className }) => {
+const OutlineButton: React.FC<OutlineButtonProps> = ({
+    text, onClick, className, disabled }) => {
     return (
         <button
-            className={`${styles.outlineButton} ${className || ''}`}
+            disabled={disabled}
+            className={`${styles.outlineButton} ${className || ''} ${disabled ? styles.disabled : ''}`}
             onClick={onClick}
         >
             <span className={styles.buttonText}>{text}</span>

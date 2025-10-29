@@ -1,8 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { graphqlRequest } from "../graphql-client"
-import { INDEX_FORMS, CREATE_FORM, DELETE_FORM } from "./queries";
+import {
+    INDEX_FORMS,
+    FETCH_FORM_WITH_QUESTIONS,
+    CREATE_FORM,
+    UPDATE_FORM,
+    DELETE_FORM
+} from "./queries";
+
 import toast from 'react-hot-toast';
-import { FormRequest } from "../../features/forms/Form";
+import { FormRequest, QuestionRequest } from "../../features/forms/Form";
 
 export const useForms = () => {
     return useQuery({
@@ -13,6 +20,27 @@ export const useForms = () => {
             return response.indexForms;
         },
         refetchOnWindowFocus: false,
+    });
+};
+
+export const useFormWithQuestions = (id: string) => {
+    return useQuery({
+        queryKey: ['form', id],
+        queryFn: async () => {
+            const response = await graphqlRequest(FETCH_FORM_WITH_QUESTIONS, { id });
+
+            const { form, questions } = response.fetchFormWithQuestions;
+
+            const formData: FormRequest = {
+                ...form,
+                questions: questions as QuestionRequest[]
+            };
+
+            return formData;
+        },
+        enabled: !!id,
+        refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000,
     });
 };
 
@@ -36,6 +64,34 @@ export const useCreateForm = () => {
     });
 };
 
+export const useUpdateForm = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ id, formData }: { id: string; formData: FormRequest }) => {
+            console.log('Calling updateForm mutation with:', {
+                id,
+                request: formData
+            });
+            
+            const response = await graphqlRequest(UPDATE_FORM, {
+                id,
+                request: formData
+            });
+            return response.updateForm;
+        },
+        onSuccess: (data, variables) => {
+            toast.success('Form updated successfully!');
+            queryClient.invalidateQueries({ queryKey: ['forms'] });
+            queryClient.invalidateQueries({ queryKey: ['form', variables.id] });
+            return data;
+        },
+        onError: (error) => {
+            console.error('Error updating form:', error);
+            toast.error('Failed to update form');
+        }
+    });
+};
 
 export const useDeleteForm = () => {
     const queryClient = useQueryClient();
