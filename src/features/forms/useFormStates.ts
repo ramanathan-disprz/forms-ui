@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { FormRequest } from './Form';
+import { FormRequest, FormResponse } from './Form';
 
 // Hook to set/update form state
 export const useSetFormState = () => {
@@ -15,4 +15,10 @@ export const useSetFormState = () => {
 export const useGetFormState = (): FormRequest | undefined => {
     const queryClient = useQueryClient();
     return queryClient.getQueryData<FormRequest>(['currentForm']);
+};
+
+export const useGetAllFormsState = (): FormResponse[] | undefined => {
+    const queryClient = useQueryClient();
+    
+    return queryClient.getQueryData<FormResponse[]>(['forms'])
 };

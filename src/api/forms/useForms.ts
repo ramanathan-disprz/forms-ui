@@ -19,6 +19,7 @@ export const useForms = () => {
             return response.indexForms;
         },
         refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000,
     });
 };
 

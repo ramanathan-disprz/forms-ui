@@ -4,9 +4,10 @@ import SortIcon from '@/assets/icons/sort.svg';
 import LeftArrowIcon from '@/assets/icons/left-arrow.svg';
 import RightArrowIcon from '@/assets/icons/right-arrow.svg';
 import SearchIcon from '../../assets/icons/search.svg';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import OutlineSolidButton from '../buttons/OutlineSolidButton';
 import { useUserSubmissions } from '../../api/submissions/useSubmissions';
+import { useGetAllFormsState } from '../../features/forms/useFormStates';
 
 const Submission: React.FC = () => {
 
@@ -60,6 +61,22 @@ const Submission: React.FC = () => {
         });
     };
 
+    const allForms = useGetAllFormsState();
+
+    const formIdToNameMap = useMemo(() => {
+        const map = new Map<string, string>();
+        if (allForms && Array.isArray(allForms)) {
+            allForms.forEach(form => {
+                map.set(form.id || "1", form.title || "Untitled Form");
+            });
+        }
+        return map;
+    }, [allForms]);
+
+    const getFormName = (formId: string): string => {
+        return formIdToNameMap.get(formId) || `Unknown Form (${formId})`;
+    };
+
     return (
         <div className={styles.container}>
 
@@ -98,17 +115,6 @@ const Submission: React.FC = () => {
                             <th>
                                 <div className={styles.headerContent}>
 
-                                    <span>Submitted By</span>
-                                    <img
-                                        src={SortIcon}
-                                        alt="Sort"
-                                        className={styles.sortIcon}
-                                    />
-                                </div>
-                            </th>
-                            <th>
-                                <div className={styles.headerContent}>
-
                                     <span>Form Id</span>
                                     <img
                                         src={SortIcon}
@@ -121,17 +127,6 @@ const Submission: React.FC = () => {
                                 <div className={styles.headerContent}>
 
                                     <span>Submitted On</span>
-                                    <img
-                                        src={SortIcon}
-                                        alt="Sort"
-                                        className={styles.sortIcon}
-                                    />
-                                </div>
-                            </th>
-                            <th>
-                                <div className={styles.headerContent}>
-
-                                    <span>Email</span>
                                     <img
                                         src={SortIcon}
                                         alt="Sort"
@@ -165,10 +160,8 @@ const Submission: React.FC = () => {
                         ) : (
                             submissions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((submission: any) => (
                                 <tr key={submission.id}>
-                                    <td>User {submission.userId}</td>
-                                    <td>{submission.formId}</td>
+                                    <td>{getFormName(submission.formId)}</td>
                                     <td>{formatDate(submission.submittedAt)}</td>
-                                    <td>user{submission.userId}@example.com</td>
                                     <td style={{ display: 'flex', justifyContent: 'center' }}>
                                         <OutlineSolidButton
                                             text="View"
