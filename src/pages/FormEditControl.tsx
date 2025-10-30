@@ -230,7 +230,7 @@ function FormEditControl(
                         />
                     )
                         : (
-                            <FormResponses />
+                            <FormResponses formId={formId} />
                         )}
             </div>
 

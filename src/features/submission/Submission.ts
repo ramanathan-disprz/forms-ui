@@ -13,3 +13,10 @@ export interface FormSubmissionRequest {
     userId?: number;
     answers?: FormAnswerRequest[];
 }
+
+export interface FormSubmissionResponse {
+    id: string;
+    formId: string;
+    userId: number;
+    submittedAt: string;
+}

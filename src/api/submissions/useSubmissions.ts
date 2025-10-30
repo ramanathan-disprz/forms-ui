@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { graphqlRequest } from "../graphql-client"
-import { SUBMIT_FORM } from "./queries";
+import { INDEX_ALL_SUBMISSIONS_BY_FORM_ID, SUBMIT_FORM } from "./queries";
 import toast from 'react-hot-toast';
 import { FormSubmissionRequest } from "../../features/submission/Submission";
 
@@ -25,5 +25,17 @@ export const useSubmitForm = () => {
             console.error('Error submitting form:', error);
             toast.error('Failed to submit form. Please try again.');
         }
+    });
+};
+
+export const useFormSubmissions = (formId: string) => {
+    return useQuery({
+        queryKey: ['form-submissions', formId],
+        queryFn: async () => {
+            const response = await graphqlRequest(INDEX_ALL_SUBMISSIONS_BY_FORM_ID, { formId });
+            return response.indexFormSubmissionByFormId;
+        },
+        enabled: !!formId,
+        staleTime: 5 * 60 * 1000, // 5 minutes
     });
 };
