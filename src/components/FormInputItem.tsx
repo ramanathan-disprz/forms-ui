@@ -138,7 +138,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                     <div className="file">
                         <div className="meta">
                             <img src={FileIcon} alt="file" className="fileIcon" />
-                            <span>{setFile.name}</span>
+                            <span>{file.name}</span>
                         </div>
                         <div className="operations">
                             <img
@@ -156,7 +156,18 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                                 alt="download"
                                 className="downloadIcon"
                                 onClick={() => {
-                                    console.log(file.name);
+                                    if (file) {
+                                        const url = URL.createObjectURL(file);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = file.name;
+                                        document.body.appendChild(a);
+                                        a.click();
+
+                                        // Cleanup
+                                        document.body.removeChild(a);
+                                        URL.revokeObjectURL(url);
+                                    }
                                 }}
                             />
                         </div>
