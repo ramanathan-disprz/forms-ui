@@ -57,7 +57,6 @@ const SubmitAnswersView: React.FC<SubmitAnswersViewProps> = ({
         });
     };
 
-
     const handleClearForm = () => {
         setAnswers({});
         // Force re-render by setting to empty object

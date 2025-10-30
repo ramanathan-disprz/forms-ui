@@ -1,8 +1,64 @@
 import styles from '../../styles/components/learner/submission/base.module.scss';
-import FilterIcon from '../../assets/icons/filter.svg';
+import FilterIcon from '@/assets/icons/filter.svg';
+import SortIcon from '@/assets/icons/sort.svg';
+import LeftArrowIcon from '@/assets/icons/left-arrow.svg';
+import RightArrowIcon from '@/assets/icons/right-arrow.svg';
 import SearchIcon from '../../assets/icons/search.svg';
+import { useState } from 'react';
+import OutlineSolidButton from '../buttons/OutlineSolidButton';
+import { useUserSubmissions } from '../../api/submissions/useSubmissions';
 
 const Submission: React.FC = () => {
+
+    const userId = 1760086631211;
+    const { data: submissions, isLoading, error } = useUserSubmissions(userId);
+
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Mock data - replace with actual data
+    const totalItems = submissions?.length || 0;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const startItem = (currentPage - 1) * itemsPerPage + 1;
+    const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1); // Reset to first page when searching
+    };
+
+    const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setItemsPerPage(Number(e.target.value));
+        setCurrentPage(1); // Reset to first page when changing items per page
+    };
+
+    const handlePageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCurrentPage(Number(e.target.value));
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
     return (
         <div className={styles.container}>
@@ -35,8 +91,148 @@ const Submission: React.FC = () => {
 
             {/* Submission Body */}
             <div className={styles.content}>
-            </div>
+                <table className={styles.list}>
+                    {/* Table Headers */}
+                    <thead>
+                        <tr>
+                            <th>
+                                <div className={styles.headerContent}>
 
+                                    <span>Submitted By</span>
+                                    <img
+                                        src={SortIcon}
+                                        alt="Sort"
+                                        className={styles.sortIcon}
+                                    />
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.headerContent}>
+
+                                    <span>Form Id</span>
+                                    <img
+                                        src={SortIcon}
+                                        alt="Sort"
+                                        className={styles.sortIcon}
+                                    />
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.headerContent}>
+
+                                    <span>Submitted On</span>
+                                    <img
+                                        src={SortIcon}
+                                        alt="Sort"
+                                        className={styles.sortIcon}
+                                    />
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.headerContent}>
+
+                                    <span>Email</span>
+                                    <img
+                                        src={SortIcon}
+                                        alt="Sort"
+                                        className={styles.sortIcon}
+                                    />
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.headerContent}>
+
+                                    <span>Response</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    {/* Table Data */}
+                    <tbody>
+                        {isLoading ? (
+                            <tr>
+                                <td colSpan={5} style={{ textAlign: 'center' }}>Loading...</td>
+                            </tr>
+                        ) : error ? (
+                            <tr>
+                                <td colSpan={5} style={{ textAlign: 'center' }}>Error loading submissions</td>
+                            </tr>
+                        ) : !submissions || submissions.length === 0 ? (
+                            <tr>
+                                <td colSpan={5} style={{ textAlign: 'center' }}>No submissions yet</td>
+                            </tr>
+                        ) : (
+                            submissions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((submission: any) => (
+                                <tr key={submission.id}>
+                                    <td>User {submission.userId}</td>
+                                    <td>{submission.formId}</td>
+                                    <td>{formatDate(submission.submittedAt)}</td>
+                                    <td>user{submission.userId}@example.com</td>
+                                    <td style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <OutlineSolidButton
+                                            text="View"
+                                            onClick={() => { }}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+
+                <div className={styles.pagination}>
+                    <div className={styles.pageDetails}>
+
+                        <div className={styles.pageSize}>
+                            <span className={styles.pageSizeText}>Items per page</span>
+                            <select
+                                value={itemsPerPage}
+                                onChange={handleItemsPerPageChange}
+                                className={styles.pageSizeDropdown}
+                            >
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                            </select>
+
+                        </div>
+
+                        <span className={styles.itemsCount}>{startItem}-{endItem} of {totalItems} items</span>
+
+                    </div>
+
+                    <div className={styles.pageControl}>
+                        <div className={styles.pageNumber}>
+                            <select
+                                value={currentPage}
+                                onChange={handlePageChange}
+                                className={styles.pageDropdown}
+                            >
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                    <option key={page} value={page}>{page}</option>
+                                ))}
+                            </select>
+                            <span className={styles.pageText}>of {totalPages} pages</span>
+                        </div>
+                        <button
+                            className={`${styles.pageLeft} ${currentPage === 1 ? styles.disabled : ''}`}
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
+                        >
+                            <img src={LeftArrowIcon} alt='left arrow icon' />
+                        </button>
+                        <button
+                            className={`${styles.pageRight} ${currentPage === totalPages ? styles.disabled : ''}`}
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
+                        >
+                            <img src={RightArrowIcon} alt='right arrow icon' />
+                        </button>
+                    </div>
+                </div>
+            </div>
 
         </div>
     );

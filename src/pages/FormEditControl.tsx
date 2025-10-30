@@ -230,7 +230,9 @@ function FormEditControl(
                         />
                     )
                         : (
-                            <FormResponses formId={formId} />
+                            <FormResponses 
+                                formId={formId} 
+                                formData={formData}/>
                         )}
             </div>
 

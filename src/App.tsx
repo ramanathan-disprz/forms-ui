@@ -14,6 +14,7 @@ import FormEditPage from "./pages/FormEditPage";
 import FormViewPage from "./pages/FormViewPage";
 import PreviewPage from "./pages/PreviewPage";
 import SubmitAnswersPage from "./pages/SubmitAnswersPage";
+import SubmissionViewPage from "./pages/SubmissionViewPage";
 
 function App() {
     return (
@@ -23,7 +24,7 @@ function App() {
                     <Route index element={<FormListView />} />
 
                     <Route path="preview/:id" element={<PreviewPage />} />
-                    
+
                     <Route path="create" element={<FormControl />} />
                     <Route path="edit/:id" element={<FormEditPage />} />
                     <Route path="view/:id" element={<FormViewPage />} />
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/forms" element={<Outlet />}>
                     <Route index element={<LearnerFormListView />} />
                     <Route path="submit/:id" element={<SubmitAnswersPage />} />
+                    <Route path="view/:id" element={<SubmissionViewPage />} />
                 </Route>
             </Routes>
 

@@ -10,15 +10,18 @@ import RightArrowIcon from '@/assets/icons/right-arrow.svg';
 import Button from '../buttons/PrimaryButton';
 import OutlineSolidButton from '../buttons/OutlineSolidButton';
 import { useFormSubmissions } from '../../api/submissions/useSubmissions';
+import { useSetFormState } from '../../features/forms/useFormStates';
+import { useNavigate } from 'react-router-dom';
 
 interface FormResponseProps {
     formId?: string;
+    formData?: any;
 }
 
 type SortField = 'submittedBy' | 'userId' | 'submittedAt' | 'email';
 type SortOrder = 'asc' | 'desc';
 
-const FormResponses: React.FC<FormResponseProps> = ({ formId }) => {
+const FormResponses: React.FC<FormResponseProps> = ({ formId, formData }) => {
     const [activeTab, setActiveTab] = useState<'summary' | 'individual'>('summary');
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +31,10 @@ const FormResponses: React.FC<FormResponseProps> = ({ formId }) => {
     const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
     const { data: submissions, isLoading, error } = useFormSubmissions(formId || "");
-    
+
+    const setFormState = useSetFormState();
+    const navigate = useNavigate();
+
     const filteredSubmissions = useMemo(() => {
         if (!submissions) return [];
 
@@ -44,10 +50,10 @@ const FormResponses: React.FC<FormResponseProps> = ({ formId }) => {
 
     const sortedSubmissions = useMemo(() => {
         if (!filteredSubmissions) return [];
-        
+
         const sorted = [...filteredSubmissions].sort((a: any, b: any) => {
             let aValue, bValue;
-            
+
             switch (sortField) {
                 case 'submittedBy':
                     aValue = `User ${a.userId}`;
@@ -68,14 +74,14 @@ const FormResponses: React.FC<FormResponseProps> = ({ formId }) => {
                 default:
                     return 0;
             }
-            
+
             if (sortOrder === 'asc') {
                 return aValue > bValue ? 1 : -1;
             } else {
                 return aValue < bValue ? 1 : -1;
             }
         });
-        
+
         return sorted;
     }, [filteredSubmissions, sortField, sortOrder]);
 
@@ -154,6 +160,11 @@ const FormResponses: React.FC<FormResponseProps> = ({ formId }) => {
             minute: '2-digit'
         });
     };
+
+    const viewSubmission = (submissionId: string) => {
+        setFormState(formData);
+        navigate(`/forms/view/${submissionId}`);
+    }
 
     return (
         <div className={styles.container}>
@@ -293,7 +304,7 @@ const FormResponses: React.FC<FormResponseProps> = ({ formId }) => {
                                     <td style={{ display: 'flex', justifyContent: 'center' }}>
                                         <OutlineSolidButton
                                             text="View"
-                                            onClick={() => { }}
+                                            onClick={() => viewSubmission(submission.id)}
                                         />
                                     </td>
                                 </tr>

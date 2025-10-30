@@ -20,3 +20,17 @@ export interface FormSubmissionResponse {
     userId: number;
     submittedAt: string;
 }
+
+export interface FormAnswer {
+    id: string;
+    submissionId: string;
+    questionId: string;
+    questionType: QuestionType;
+    valueText?: string;
+    valueJson?: string;
+}
+
+export interface FormSubmissionDetail {
+    submission: FormSubmissionResponse;
+    answers: FormAnswer[];
+}
