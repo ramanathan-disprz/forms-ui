@@ -6,7 +6,7 @@ import Submission from '../components/learner/Submission';
 
 const LearnerFormListView: React.FC = () => {
   const [selectedTab, setSelectedTab] =
-    useState<'forms' | 'submissions'>('submissions');
+    useState<'forms' | 'submissions'>('forms');
   return (
     <div className={styles.container}>
       <NavigationBar />

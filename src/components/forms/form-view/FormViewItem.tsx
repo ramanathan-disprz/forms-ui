@@ -1,15 +1,17 @@
 import styles from '@/styles/components/forms/form-view/base.module.scss';
 import FormInputItem from '../../FormInputItem';
+import { Option } from '../../../features/forms/Form';
 interface FormViewItemProps {
-    order: number;
-    questionText: string;
+    order?: number;
+    questionText?: string;
     description?: string;
 
-    inputType: "text" | "textarea" | "date" | "numeric" | "file" | "dropdown";
+    inputType?: "text" | "textarea" | "date" | "numeric" | "file" | "dropdown" | string;
     isDisabled?: boolean;
     isRequired?: boolean;
     value?: string;
     valuePlaceholder?: string
+    options?: Option[]
 }
 
 const FormViewItem: React.FC<FormViewItemProps> = ({
@@ -21,6 +23,7 @@ const FormViewItem: React.FC<FormViewItemProps> = ({
     isRequired,
     value,
     valuePlaceholder,
+    options = []
 }) => {
     return (
         <div className={styles.container}>
@@ -30,20 +33,22 @@ const FormViewItem: React.FC<FormViewItemProps> = ({
                     <span className={styles.questionNumber}>{order}</span>
                     <span className={styles.questionText}>{questionText}</span>
                 </div>
-                <div className={styles.questionDescription}>
-                    {description}
-                </div>
+                {description && description.trim() !== '' && (
+                    <div className={styles.questionDescription}>
+                        {description}
+                    </div>
+                )}
             </div>
             <div className={styles.inputContainer}>
                 <FormInputItem
-                    inputType={inputType}
+                    inputType={inputType || "text"}
                     isDisabled={isDisabled}
                     isRequired={isRequired}
                     value={value}
                     valuePlaceholder={valuePlaceholder}
+                    dropdownOptions = {options}
                 />
             </div>
-
         </div>
     )
 }

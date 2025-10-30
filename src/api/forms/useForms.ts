@@ -16,7 +16,6 @@ export const useForms = () => {
         queryKey: ['forms'],
         queryFn: async () => {
             const response = await graphqlRequest(INDEX_FORMS);
-            console.log(response)
             return response.indexForms;
         },
         refetchOnWindowFocus: false,

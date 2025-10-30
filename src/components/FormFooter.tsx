@@ -2,12 +2,14 @@ import Button from "./buttons/PrimaryButton";
 
 import "../styles/components/form-footer/base.scss";
 import OutlineButton from "./buttons/OutlineButton";
+import SecondaryButton from "./buttons/SecondaryButton";
 
 interface FormFooterProps {
     selectedTab: 'configuration' | 'layout' | 'responses';
     onNext?: () => void;
     onPublish?: () => void;
     onSaveDraft?: () => void;
+    onPreview?: () => void;
     canEdit?: boolean
 }
 
@@ -16,29 +18,41 @@ const FormFooter: React.FC<FormFooterProps> = ({
     onNext,
     onPublish,
     onSaveDraft,
+    onPreview,
     canEdit = true
 }) => {
 
     return (
         <div className="form-footer">
-            <OutlineButton
-                text="Save as Draft"
-                disabled={!canEdit}
-                onClick={onSaveDraft || (() => { })}
-            />
-            {selectedTab === 'configuration' ? (
-                <Button
-                    text="Next"
-                    disabled={!canEdit}
-                    onClick={onNext || (() => { })}
+            <div className="partA">
+                <OutlineButton
+                    text="Preview"
+                    onClick={onPreview || (() => { })}
                 />
-            ) : selectedTab === 'layout' ? (
-                <Button
-                    text="Publish Form"
+            </div>
+
+            <div className="partB">
+                <OutlineButton
+                    text="Save as Draft"
                     disabled={!canEdit}
-                    onClick={onPublish || (() => { })}
+                    onClick={onSaveDraft || (() => { })}
                 />
-            ) : null}
+                {selectedTab === 'configuration' ? (
+                    <Button
+                        text="Next"
+                        disabled={!canEdit}
+                        onClick={onNext || (() => { })}
+                    />
+                ) : selectedTab === 'layout' ? (
+                    <Button
+                        text="Publish Form"
+                        disabled={!canEdit}
+                        onClick={onPublish || (() => { })}
+                    />
+                ) : null}
+
+            </div>
+
         </div>
     );
 }

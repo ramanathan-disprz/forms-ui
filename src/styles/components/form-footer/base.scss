@@ -13,8 +13,17 @@ $nav-bg: #FFFFFF;
 
     display: flex;
     gap: 12px;
-    justify-content: end;
+    justify-content: space-between;
 
     border-top: 1px solid #E0E0E0;
     z-index: 100;
+
+    .partA {}
+
+    .partB {
+        display: flex;
+        gap: 12px;
+
+
+    }
 }

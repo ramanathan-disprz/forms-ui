@@ -25,7 +25,6 @@ const FormListView: React.FC = () => {
     )
     : data;
 
-  console.log(filteredForms)
   if (isLoading) {
     return (
       <div className="form-list-container">
@@ -47,10 +46,6 @@ const FormListView: React.FC = () => {
       </div>
     );
   }
-
-  console.log(filteredForms)
-
-
   return (
     <div className="form-list-container">
       <NavigationBar />

@@ -9,6 +9,8 @@ import { FormRequest, FormStatus, QuestionRequest } from "../features/forms/Form
 import { useUpdateForm } from "../api/forms/useForms";
 import toast from "react-hot-toast";
 import FormResponses from "../components/forms/FormResponses";
+import { useNavigate } from "react-router-dom";
+import { useSetFormState } from "../features/forms/useFormStates";
 
 interface FormEditControlProps {
     formId: string;
@@ -22,6 +24,8 @@ function FormEditControl(
         form,
         canEdit = true }: FormEditControlProps) {
 
+    const navigate = useNavigate();
+    const setFormState = useSetFormState();
     const [selectedTab, setSelectedTab] =
         useState<'configuration' | 'layout' | 'responses'>('configuration');
 
@@ -88,7 +92,6 @@ function FormEditControl(
         updateFormMutation.mutate(
             { id: formId, formData: publishForm }, {
             onSuccess: (data) => {
-                console.log('Form published successfully:', data);
                 toast.success('Form published successfully');
                 setFormData(prev => ({ ...prev, id: data.id }));
             },
@@ -110,7 +113,6 @@ function FormEditControl(
         updateFormMutation.mutate(
             { id: formId, formData: draftForm }, {
             onSuccess: (data) => {
-                console.log('Draft updated successfully:', data);
                 toast.success('Form published successfully');
                 setFormData(prev => ({ ...prev, id: data.id }));
             },
@@ -118,6 +120,11 @@ function FormEditControl(
                 console.error('Failed to save draft:', error);
             }
         });
+    };
+
+    const handlePreview = () => {
+        setFormState(form);
+        navigate(`/form-builder/preview/${formId}`)
     };
 
     return (
@@ -178,6 +185,7 @@ function FormEditControl(
                 onNext={handleNext}
                 onPublish={handlePublish}
                 onSaveDraft={handleSaveDraft}
+                onPreview={handlePreview}
             />
 
         </div>

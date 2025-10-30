@@ -1,6 +1,5 @@
 import {
     BrowserRouter as Router,
-    Navigate,
     Route,
     Routes,
     Outlet
@@ -10,12 +9,10 @@ import { Toaster } from "react-hot-toast";
 import './App.css';
 import FormListView from "./pages/FormListView";
 import FormControl from "./pages/FormControl";
-import FormResponseView from "./pages/FormResponseView";
 import LearnerFormListView from "./pages/LearnerFormListView";
-import FormEditControl from "./pages/FormEditControl";
 import FormEditPage from "./pages/FormEditPage";
 import FormViewPage from "./pages/FormViewPage";
-
+import PreviewPage from "./pages/PreviewPage";
 
 function App() {
     return (
@@ -23,7 +20,7 @@ function App() {
             <Routes>
                 <Route path="/form-builder" element={<Outlet />}>
                     <Route index element={<FormListView />} />
-                    <Route path="view" element={<FormResponseView />} />
+                    <Route path="preview/:id" element={<PreviewPage />} />
                     <Route path="create" element={<FormControl />} />
                     <Route path="edit/:id" element={<FormEditPage />} />
                     <Route path="view/:id" element={<FormViewPage />} />

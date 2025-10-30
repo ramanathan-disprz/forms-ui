@@ -103,12 +103,21 @@ const FormCard: React.FC<FormCardProps> = ({
                 )}
 
             </div>
+            {!isPublished ? (
+                <div className="card-body">
+                    <FormFieldItem label="Created By" value={publishedBy} />
+                    <FormFieldItem label="Created On" value={publishedDate} />
+                    <FormFieldItem label="Workflow Usage" value="-" />
+                </div>
 
-            <div className="card-body">
-                <FormFieldItem label="Published By" value={publishedBy} />
-                <FormFieldItem label="Published Date" value={publishedDate} />
-                <FormFieldItem label="Workflow Usage" value="21" />
-            </div>
+            ) : (
+                <div className="card-body">
+                    <FormFieldItem label="Published By" value={publishedBy} />
+                    <FormFieldItem label="Published On" value={publishedDate} />
+                    <FormFieldItem label="Workflow Usage" value="-" />
+                </div>
+            )}
+
 
 
             <div className="card-footer">

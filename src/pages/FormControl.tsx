@@ -9,8 +9,14 @@ import FormResponses from "../components/forms/FormResponses";
 import { FormRequest, FormStatus, FormViewStatus } from "../features/forms/Form";
 import { useCreateForm } from "../api/forms/useForms";
 import toast from "react-hot-toast";
+import { useSetFormState } from "../features/forms/useFormStates";
+import { useNavigate } from "react-router-dom";
 
 function FormControl() {
+  const navigate = useNavigate();
+  const setFormState = useSetFormState();
+
+
   const [selectedTab, setSelectedTab] =
     useState<'configuration' | 'layout' | 'responses'>('configuration');
 
@@ -50,7 +56,6 @@ function FormControl() {
 
     createFormMutation.mutate(publishedForm, {
       onSuccess: (data) => {
-        console.log('Form published successfully:', data);
         toast.success('Form published successfully');
         setForm(prev => ({ ...prev, id: data.id }));
       },
@@ -59,6 +64,8 @@ function FormControl() {
       }
     });
   };
+
+
   const handleSaveDraft = () => {
     const draftForm = {
       ...form,
@@ -83,6 +90,12 @@ function FormControl() {
         console.error('Failed to save draft:', error);
       }
     });
+  };
+
+  const handlePreview = () => {
+    console.log("state set")
+    setFormState(form);
+    navigate("/form-builder/preview/1")
   };
 
   return (
@@ -139,6 +152,7 @@ function FormControl() {
         onNext={handleNext}
         onPublish={handlePublish}
         onSaveDraft={handleSaveDraft}
+        onPreview={handlePreview}
       />
 
     </div>

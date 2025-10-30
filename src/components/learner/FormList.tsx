@@ -4,21 +4,42 @@ import InfoIcon from '../../assets/icons/info.svg';
 import FilterIcon from '../../assets/icons/filter.svg';
 import SearchIcon from '../../assets/icons/search.svg'
 import FormViewCard from './FormViewCard';
+import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { useForms } from '../../api/forms/useForms';
 
 const FormList: React.FC = () => {
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState("");
 
-    let forms = [
-        {
-            title: 'Professional Certificate Training',
-            description: 'Request approval for external professional training development courses and certifications.',
-            dueDate: 'Aug 25, 2025',
-            formType: 'Training Needs Form',
-            buttonText: 'Start Requesting'
-        },
-    ];
+    const { data, isLoading, error } = useForms();
+    const hasNoFormsRef = useRef(false);
+    hasNoFormsRef.current = !isLoading && (!data || data.length === 0);
 
-    const count = 6;
-    forms = Array(count).fill(forms[0]);
+    // Filter forms based on search
+    const filteredForms = searchTerm
+        ? data.filter((form: any) =>
+            form.title?.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : data;
+
+
+    if (isLoading) {
+        return (
+            <div className={styles.container}>
+                <p>Loading forms...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className={styles.container}>
+                <p>Error loading forms: {error.message}</p>
+            </div>
+        );
+
+    };
 
     return (
         <div className={styles.container}>
@@ -57,19 +78,17 @@ const FormList: React.FC = () => {
 
             {/* Body */}
             <div className={styles.content}>
-                {forms.map((card, index) => (
+                {filteredForms.map((card: any, index: number) => (
                     <FormViewCard
                         key={index}
                         title={card.title}
                         description={card.description}
-                        dueDate={card.dueDate}
-                        formType={card.formType}
-                        buttonText={card.buttonText}
+                        dueDate={card.publishedDate}
+                        formType={'External Form'}
+                        buttonText={'Start Requesting'}
                     />
                 ))}
             </div>
-
-
         </div>
     )
 };

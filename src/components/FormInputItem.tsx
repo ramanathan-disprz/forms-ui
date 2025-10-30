@@ -5,9 +5,10 @@ import FileUploadIcon from "../assets/question-icons/file-upload.svg";
 import DeleteIcon from "../assets/icons/delete.svg";
 import DownloadIcon from "../assets/icons/download.svg";
 import FileIcon from "@/assets/icons/file.svg";
+import { Option } from "../features/forms/Form";
 
 interface FormInputItemProps {
-    inputType: "text" | "textarea" | "date" | "numeric" | "file" | "dropdown";
+    inputType: "text" | "textarea" | "date" | "numeric" | "file" | "dropdown" | string;
     isDisabled?: boolean;
     label?: string
     isRequired?: boolean;
@@ -16,6 +17,8 @@ interface FormInputItemProps {
     valuePlaceholder?: string
     maxLength?: number;
     onChange?: (value: string) => void;
+    dropdownOptions?: Option[];
+
 }
 
 const FormInputItem: React.FC<FormInputItemProps> = ({
@@ -27,15 +30,11 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
     valuePlaceholder,
     maxLength,
     onChange,
+    dropdownOptions = [],
 }) => {
 
     const [data, setData] = useState(value || "");
-
-    const dropdownOptions = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-        { value: "option3", label: "Option 3" },
-    ];
+    const [file, setFile] = useState<File | null>(null);
 
     useEffect(() => {
         setData(value || "");
@@ -50,6 +49,20 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
             onChange(newValue);
         }
     }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            if (selectedFile.size > 2 * 1024 * 1024) {
+                alert('File size must be less than 2MB');
+                return;
+            }
+            setFile(selectedFile);
+            if (onChange) {
+                onChange(selectedFile.name);
+            }
+        }
+    };
 
     let input: any;
     if (inputType == "text") {
@@ -94,7 +107,6 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
     }
     else if (inputType == "file") {
 
-        const [file, setFile] = useState<File | null>(null);
         input = (
             <div className="fileUpload">
                 {!file ? (
@@ -162,9 +174,12 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 className="dropdownInput"
                 value={data}
                 onChange={handleChange}
+                disabled={isDisabled}
             >
-                <option value="">Select an option</option>
-                {dropdownOptions?.map((option) => (
+                <option value="">
+                    {valuePlaceholder || "Select an option"}
+                </option>
+                {dropdownOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>
