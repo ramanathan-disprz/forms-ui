@@ -88,10 +88,10 @@ const DropdownTile: React.FC<DropdownTileProps> = ({
                 />
             )}
             <div className={styles.container}>
-                {(question.options || []).map((option) => (
+                {(question.options || []).map((option, index) => (
                     <SelectQuestionOption
                         key={option.id}
-                        order={option.order}
+                        order={index + 1}
                         optionValue={option.value}
                         onValueChange={(newValue) => handleOptionValueChange(option.id, newValue)}
                         onClose={() => handleRemoveOption(option.id)}

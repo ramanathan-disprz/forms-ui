@@ -6,7 +6,7 @@ import FormFooter from "../components/FormFooter";
 import FormConfig from "../components/forms/FormConfig";
 import FormLayout from "../components/forms/FormLayout";
 import FormResponses from "../components/forms/FormResponses";
-import { FormRequest, FormStatus, FormViewStatus } from "../features/forms/Form";
+import { FormRequest, FormStatus, FormViewStatus, QuestionType } from "../features/forms/Form";
 import { useCreateForm } from "../api/forms/useForms";
 import toast from "react-hot-toast";
 import { useSetFormState } from "../features/forms/useFormStates";
@@ -40,16 +40,31 @@ function FormControl() {
     setSelectedTab('layout');
   };
 
+  const processQuestionsForSubmission = (questions: any[]) => {
+    return (questions || []).map(q => {
+      const { id, ...questionWithoutId } = q;
+
+      if (questionWithoutId.type === QuestionType.SELECT && questionWithoutId.options) {
+        questionWithoutId.options = questionWithoutId.options.map((option: any) => {
+          const { id, order, ...optionWithoutId } = option;
+          return {
+            value: optionWithoutId.value || '',
+            label: optionWithoutId.value || ''
+          };
+        });
+      }
+
+      return questionWithoutId;
+    });
+  };
+
   const handlePublish = () => {
     const publishedForm = {
       ...form,
       publishedBy: 23092003,
       publishedDate: new Date(),
       formStatus: FormStatus.DRAFT,
-      questions: (form.questions || []).map(q => {
-        const { id, ...questionWithoutId } = q;
-        return questionWithoutId;
-      })
+      questions: processQuestionsForSubmission(form.questions || [])
     };
 
     console.log('Sending draft form:', JSON.stringify(publishedForm, null, 2));
@@ -65,17 +80,13 @@ function FormControl() {
     });
   };
 
-
   const handleSaveDraft = () => {
     const draftForm = {
       ...form,
       publishedBy: 23092003,
       publishedDate: new Date(),
       formStatus: FormStatus.DRAFT,
-      questions: (form.questions || []).map(q => {
-        const { id, ...questionWithoutId } = q;
-        return questionWithoutId;
-      })
+      questions: processQuestionsForSubmission(form.questions || [])
     };
 
     console.log('Sending draft form:', JSON.stringify(draftForm, null, 2));

@@ -20,13 +20,12 @@ export enum QuestionType {
 
 export interface Option {
     id: string;
-    order: number;
     value: string;
     label: string;
 }
 
 export interface QuestionRequest {
-    id?: string; // for ui
+    id?: string; 
     formId?: string;
     type?: QuestionType;
     questionText?: string;
@@ -55,6 +54,20 @@ export interface QuestionRequest {
 }
 
 export interface FormRequest {
+    title?: string;
+    description?: string;
+    publishedBy?: number;
+    publishedDate?: Date;
+    formStatus?: FormStatus;
+    formViewStatus?: FormViewStatus;
+    questionLimit?: number;
+    allowMultipleResponses?: boolean;
+    questions?: QuestionRequest[];
+}
+
+
+export interface FormResponse{
+    id?: string;
     title?: string;
     description?: string;
     publishedBy?: number;

@@ -64,6 +64,12 @@ const FormCard: React.FC<FormCardProps> = ({
         setShowDropdown(false);
     };
 
+    const handleViewResponse = () => {
+        console.log("View Response");
+        navigate(`/form-builder/view/${id}?tab=responses`);
+    }
+
+
     return (
         <div className="card-container">
 
@@ -131,7 +137,7 @@ const FormCard: React.FC<FormCardProps> = ({
 
                 {isPublished ?
                     (
-                        <Button text="View Responses" onClick={() => { }} />
+                        <Button text="View Responses" onClick={handleViewResponse} />
                     ) : (
                         <Button text="View Responses" disabled={true} onClick={() => { }} />
                     )

@@ -12,13 +12,11 @@ interface FormInputItemProps {
     isDisabled?: boolean;
     label?: string
     isRequired?: boolean;
-
     value?: string;
     valuePlaceholder?: string
     maxLength?: number;
     onChange?: (value: string) => void;
     dropdownOptions?: Option[];
-
 }
 
 const FormInputItem: React.FC<FormInputItemProps> = ({
@@ -181,7 +179,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 </option>
                 {dropdownOptions.map((option) => (
                     <option key={option.value} value={option.value}>
-                        {option.label}
+                        {option.value}
                     </option>
                 ))}
             </select>

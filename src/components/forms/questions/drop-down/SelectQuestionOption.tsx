@@ -1,5 +1,4 @@
 import styles from '@/styles/components/forms/form-layout/questions/dropdown/select-option/base.module.scss';
-import { useState } from 'react';
 
 import CloseIcon from '@/assets/question-icons/close.svg';
 interface SelectQuestionOptionProps {

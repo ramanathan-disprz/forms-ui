@@ -7,6 +7,7 @@ import FormViewCard from './FormViewCard';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { useForms } from '../../api/forms/useForms';
+import { FormStatus } from '../../features/forms/Form';
 
 const FormList: React.FC = () => {
     const navigate = useNavigate();
@@ -16,13 +17,15 @@ const FormList: React.FC = () => {
     const hasNoFormsRef = useRef(false);
     hasNoFormsRef.current = !isLoading && (!data || data.length === 0);
 
-    // Filter forms based on search
-    const filteredForms = searchTerm
-        ? data.filter((form: any) =>
+    let filteredForms = data?.filter((form: any) => {
+        return form?.formStatus === FormStatus.PUBLISHED
+    }) || [];
+
+    filteredForms = searchTerm
+        ? filteredForms.filter((form: any) =>
             form.title?.toLowerCase().includes(searchTerm.toLowerCase())
         )
-        : data;
-
+        : filteredForms;
 
     if (isLoading) {
         return (
@@ -38,8 +41,12 @@ const FormList: React.FC = () => {
                 <p>Error loading forms: {error.message}</p>
             </div>
         );
-
     };
+
+    const handleSubmit = (formId: string | number) => {
+        console.log('Starting form with ID:', formId);
+        navigate(`/forms/submit/${formId}`)
+    }
 
     return (
         <div className={styles.container}>
@@ -63,6 +70,8 @@ const FormList: React.FC = () => {
                         <input
                             type="text"
                             placeholder="Search"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <div className={styles.filter}>
@@ -81,11 +90,14 @@ const FormList: React.FC = () => {
                 {filteredForms.map((card: any, index: number) => (
                     <FormViewCard
                         key={index}
+
+                        formId={card.id}
                         title={card.title}
                         description={card.description}
                         dueDate={card.publishedDate}
                         formType={'External Form'}
-                        buttonText={'Start Requesting'}
+                        onClick={handleSubmit}
+                        buttonText={'Start'}
                     />
                 ))}
             </div>

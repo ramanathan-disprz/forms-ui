@@ -1,6 +1,6 @@
 import OutlineButton from '../components/buttons/OutlineButton';
 import FormViewItem from '../components/forms/form-view/FormViewItem';
-import { FormRequest, QuestionType } from '../features/forms/Form';
+import { QuestionType } from '../features/forms/Form';
 import { useGetFormState } from '../features/forms/useFormStates';
 import styles from '../styles/pages/view-form/base.module.scss';
 
@@ -11,7 +11,7 @@ interface FormResponseViewProps {
 const FormResponseView: React.FC<FormResponseViewProps> = ({
     formId,
 }) => {
-    const formData = useGetFormState(); // This is correct usage
+    const formData = useGetFormState();
 
     if (!formData) {
         return <div>No form data available</div>;
