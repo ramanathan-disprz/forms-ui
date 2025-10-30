@@ -73,6 +73,7 @@ function FormControl() {
       onSuccess: (data) => {
         toast.success('Form published successfully');
         setForm(prev => ({ ...prev, id: data.id }));
+        navigate(`/form-builder`);
       },
       onError: (error) => {
         console.error('Failed to save draft:', error);
@@ -96,6 +97,7 @@ function FormControl() {
         console.log('Draft saved successfully:', data);
         toast.success('Draft saved successfully');
         setForm(prev => ({ ...prev, id: data.id }));
+        navigate(`/form-builder`);
       },
       onError: (error) => {
         console.error('Failed to save draft:', error);
@@ -104,7 +106,6 @@ function FormControl() {
   };
 
   const handlePreview = () => {
-    console.log("state set")
     setFormState(form);
     navigate("/form-builder/preview/1")
   };

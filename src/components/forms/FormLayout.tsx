@@ -73,6 +73,7 @@ const FormLayout: React.FC<FormLayoutProps> = ({
             ...(type === QuestionType.FILE && {
                 allowedFileTypes: ['.pdf', '.png', '.jpg', '.jpeg'],
                 maxFileSizeMB: 2,
+                maxTotalFileSizeMB:2,
                 maxFiles: 1
             }),
             ...(type === QuestionType.SELECT && {

@@ -18,10 +18,6 @@ interface FormEditControlProps {
     canEdit?: boolean;
 }
 
-interface LocationState {
-    selectedTab?: 'configuration' | 'layout' | 'responses';
-}
-
 function FormEditControl(
     {
         formId,
@@ -150,6 +146,7 @@ function FormEditControl(
             onSuccess: (data) => {
                 toast.success('Form published successfully');
                 setFormData(prev => ({ ...prev, id: data.id }));
+                navigate(`/form-builder`);
             },
             onError: (error) => {
                 console.error('Failed to save draft:', error);
@@ -171,6 +168,7 @@ function FormEditControl(
             onSuccess: (data) => {
                 toast.success('Form published successfully');
                 setFormData(prev => ({ ...prev, id: data.id }));
+                navigate(`/form-builder`);
             },
             onError: (error) => {
                 console.error('Failed to save draft:', error);
@@ -230,9 +228,9 @@ function FormEditControl(
                         />
                     )
                         : (
-                            <FormResponses 
-                                formId={formId} 
-                                formData={formData}/>
+                            <FormResponses
+                                formId={formId}
+                                formData={formData} />
                         )}
             </div>
 
@@ -245,7 +243,6 @@ function FormEditControl(
                 onSaveDraft={handleSaveDraft}
                 onPreview={handlePreview}
             />
-
         </div>
     )
 }

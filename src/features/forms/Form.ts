@@ -14,7 +14,7 @@ export enum QuestionType {
     LONG_TEXT = 'LONG_TEXT',
     NUMBER = 'NUMBER',
     DATE = 'DATE',
-    FILE = 'FILE',
+    FILE = 'FILE_UPLOAD',
     SELECT = 'SELECT'
 }
 
