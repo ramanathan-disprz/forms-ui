@@ -180,7 +180,8 @@ const FormResponses: React.FC<FormResponseProps> = ({ formId, formData }) => {
                     </span>
                     <span
                         className={activeTab === 'individual' ? styles.active : ''}
-                        onClick={() => setActiveTab('individual')}
+                        aria-disabled={true}
+                        onClick={() => {}}
                     >
                         Individual Response
                     </span>
