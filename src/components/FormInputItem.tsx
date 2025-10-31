@@ -71,6 +71,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 onChange={handleChange}
                 placeholder={valuePlaceholder}
                 maxLength={maxLength}
+                required={isRequired}
             />
         );
     }
@@ -81,6 +82,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 onChange={handleChange}
                 placeholder={valuePlaceholder}
                 maxLength={maxLength}
+                required={isRequired}
             />
         );
     }
@@ -90,6 +92,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 type="date"
                 value={data}
                 onChange={handleChange}
+                required={isRequired}
             />
         );
     }
@@ -100,6 +103,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 type="number"
                 value={data}
                 onChange={handleChange}
+                required={isRequired}
             />
         );
     }
@@ -114,6 +118,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                             id={`fileInput`}
                             className="hiddenFileInput"
                             accept=".pdf,.png,.jpg,.jpeg"
+                            required={isRequired}
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (file) {
@@ -183,6 +188,7 @@ const FormInputItem: React.FC<FormInputItemProps> = ({
                 className="dropdownInput"
                 value={data}
                 onChange={handleChange}
+                required={isRequired}
                 disabled={isDisabled}
             >
                 <option value="">

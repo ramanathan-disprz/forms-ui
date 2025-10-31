@@ -32,6 +32,10 @@ const FormResponseView: React.FC<FormResponseViewProps> = ({
         return typeMap[type] || 'text';
     };
 
+    const handleClearForm = () => {
+        
+    };
+
     return (
         <div className={styles.container}>
 
@@ -73,9 +77,9 @@ const FormResponseView: React.FC<FormResponseViewProps> = ({
                 </div>
             </div>
 
-            <div className={styles.footer}>
-                <OutlineButton text="Clear Form" onClick={() => { }} />
-            </div>
+            {/* <div className={styles.footer}>
+                <OutlineButton text="Clear Form" onClick={() => { handleClearForm }} />
+            </div> */}
         </div >
     )
 };

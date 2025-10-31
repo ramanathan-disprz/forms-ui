@@ -54,6 +54,7 @@ const FormViewItem: React.FC<FormViewItemProps> = ({
                 <div className={styles.question}>
                     <span className={styles.questionNumber}>{order}</span>
                     <span className={styles.questionText}>{questionText}</span>
+                    {isRequired && <span className="required-asterisk">*</span>}
                 </div>
                 {description && description.trim() !== '' && (
                     <div className={styles.questionDescription}>
