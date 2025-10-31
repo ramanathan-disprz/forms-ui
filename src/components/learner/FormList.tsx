@@ -7,7 +7,7 @@ import FormViewCard from './FormViewCard';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useState } from 'react';
 import { useForms } from '../../api/forms/useForms';
-import { FormStatus } from '../../features/forms/Form';
+import { FormStatus, FormViewStatus } from '../../features/forms/Form';
 
 const FormList: React.FC = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const FormList: React.FC = () => {
     hasNoFormsRef.current = !isLoading && (!data || data.length === 0);
 
     let filteredForms = data?.filter((form: any) => {
-        return form?.formStatus === FormStatus.PUBLISHED
+        return form?.formStatus === FormStatus.PUBLISHED && form?.formViewStatus === FormViewStatus.ENABLED
     }) || [];
 
     filteredForms = searchTerm

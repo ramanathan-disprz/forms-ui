@@ -51,7 +51,7 @@ const FormConfig: React.FC<FormConfigProps> = ({
                 />
 
                 <FormVisiblity
-                    enabled={false}
+                    enabled={formData.formViewStatus === FormViewStatus.ENABLED}
                     onToggle={handleVisibilityToggle}
                 />
 

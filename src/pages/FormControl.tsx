@@ -132,12 +132,12 @@ function FormControl() {
             Form Layout
           </span>
 
-          <span
+          {/* <span
             className={`form-tab-text ${selectedTab === 'responses' ? 'active' : ''}`}
             onClick={() => setSelectedTab('responses')}
           >
             Form Responses
-          </span>
+          </span> */}
         </div>
 
         {/* Form Body */}

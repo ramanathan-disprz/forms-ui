@@ -23,7 +23,7 @@ type SortOrder = 'asc' | 'desc';
 
 const FormResponses: React.FC<FormResponseProps> = ({ formId, formData }) => {
     const [activeTab, setActiveTab] = useState<'summary' | 'individual'>('summary');
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
 
     const [searchTerm, setSearchTerm] = useState('');

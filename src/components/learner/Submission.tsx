@@ -7,31 +7,27 @@ import SearchIcon from '../../assets/icons/search.svg';
 import { useMemo, useState } from 'react';
 import OutlineSolidButton from '../buttons/OutlineSolidButton';
 import { useUserSubmissions } from '../../api/submissions/useSubmissions';
-import { useGetAllFormsState } from '../../features/forms/useFormStates';
+import { useGetAllFormsState, useSetFormState } from '../../features/forms/useFormStates';
+import { useNavigate } from 'react-router-dom';
+import { useForms } from '../../api/forms/useForms';
 
 const Submission: React.FC = () => {
 
     const userId = 1760086631211;
     const { data: submissions, isLoading, error } = useUserSubmissions(userId);
 
-    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Mock data - replace with actual data
-    const totalItems = submissions?.length || 0;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const startItem = (currentPage - 1) * itemsPerPage + 1;
-    const endItem = Math.min(currentPage * itemsPerPage, totalItems);
-
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
-        setCurrentPage(1); // Reset to first page when searching
+        setCurrentPage(1);
     };
 
     const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setItemsPerPage(Number(e.target.value));
-        setCurrentPage(1); // Reset to first page when changing items per page
+        setCurrentPage(1);
     };
 
     const handlePageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -77,6 +73,29 @@ const Submission: React.FC = () => {
         return formIdToNameMap.get(formId) || `Unknown Form (${formId})`;
     };
 
+    const filteredSubmissions = useMemo(() => {
+        if (!submissions) return [];
+        if (!searchTerm) return submissions;
+        
+        return submissions.filter((submission: any) => {
+            const formName = getFormName(submission.formId).toLowerCase();
+            const submittedDate = formatDate(submission.submittedAt).toLowerCase();
+            const searchLower = searchTerm.toLowerCase();
+            
+            return formName.includes(searchLower) || 
+                   submittedDate.includes(searchLower);
+        });
+    }, [submissions, searchTerm, formIdToNameMap]);
+
+    const totalItems = filteredSubmissions?.length || 0;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const startItem = (currentPage - 1) * itemsPerPage + 1;
+    const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+
+    const viewSubmission = (submissionId: string, formId: string) => {
+
+    }
+
     return (
         <div className={styles.container}>
 
@@ -92,6 +111,8 @@ const Submission: React.FC = () => {
                         <input
                             type="text"
                             placeholder="Search"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
                         />
                     </div>
                     <div className={styles.filter}>
@@ -153,19 +174,22 @@ const Submission: React.FC = () => {
                             <tr>
                                 <td colSpan={5} style={{ textAlign: 'center' }}>Error loading submissions</td>
                             </tr>
-                        ) : !submissions || submissions.length === 0 ? (
+                        ) : !filteredSubmissions || filteredSubmissions.length === 0 ? (
                             <tr>
-                                <td colSpan={5} style={{ textAlign: 'center' }}>No submissions yet</td>
+                                <td colSpan={5} style={{ textAlign: 'center' }}>
+                                    {searchTerm ? 'No matching submissions found' : 'No submissions yet'}
+                                </td>
                             </tr>
                         ) : (
-                            submissions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((submission: any) => (
+                            filteredSubmissions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((submission: any) => (
                                 <tr key={submission.id}>
                                     <td>{getFormName(submission.formId)}</td>
                                     <td>{formatDate(submission.submittedAt)}</td>
                                     <td style={{ display: 'flex', justifyContent: 'center' }}>
                                         <OutlineSolidButton
                                             text="View"
-                                            onClick={() => { }}
+                                            onClick={() => viewSubmission(submission.id, submission.formId)}
+                                            disabled={true}
                                         />
                                     </td>
                                 </tr>

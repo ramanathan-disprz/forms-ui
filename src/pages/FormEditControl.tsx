@@ -135,6 +135,8 @@ function FormEditControl(
         const questionsToSubmit = prepareQuestionsForSubmit(formData.questions);
         const publishForm: FormRequest = {
             title: formData.title,
+            description: formData.description, 
+            formViewStatus: formData.formViewStatus,
             formStatus: FormStatus.PUBLISHED,
             questions: questionsToSubmit
         };
@@ -158,6 +160,8 @@ function FormEditControl(
         const questionsToSubmit = prepareQuestionsForSubmit(formData.questions);
         const draftForm: FormRequest = {
             title: formData.title,
+            description: formData.description, 
+            formViewStatus: formData.formViewStatus,
             questions: questionsToSubmit
         };
 
